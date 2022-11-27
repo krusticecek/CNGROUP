@@ -37,10 +37,10 @@ export function RecipeListPage() {
 
   return (
     <Box px={5}>
-      <Heading my={4} color="dodgerblue">
-        Recipes
+      <Heading display={"flex"} justifyContent={"center"} my={4} color="teal">
+        Recepty
       </Heading>
-      <Input placeholder='Search' value={searchValue} onChange={handleInputValueChange}/>
+      <Input placeholder='Search' value={searchValue} onChange={handleInputValueChange} mb={"20px"}/>
       {isLoading && <Loader/>}
       {error && <Text>{error}</Text>}
       <RecipeList recipes={filteredRecipes}/>

@@ -7,6 +7,7 @@ import { ApiTestPage } from './pages/ApiTestPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 import { RecipeListPage } from './pages/RecipeListPage';
 import { RecipeDetailPage } from './pages/RecipeDetailPage';
+import {SideDishesPage} from "./pages/SideDishesPage";
 
 export function App() {
   return (
@@ -17,6 +18,7 @@ export function App() {
             <Route path="/" element={<RecipeListPage />} />
              <Route path="/recept/:slug" element={<RecipeDetailPage />} />
             <Route path="/api-test" element={<ApiTestPage />} />
+            <Route path="/side-dishes" element={<SideDishesPage/>} />
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </AppLayout>

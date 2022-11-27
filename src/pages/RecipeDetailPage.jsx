@@ -46,7 +46,6 @@ export function RecipeDetailPage() {
     return(
       `${hours}h:${minutes}min`
     )
-    // test gitu
   }
 
   return (
