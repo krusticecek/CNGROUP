@@ -3,8 +3,10 @@ import {useParams} from "react-router-dom";
 import {api} from "../api";
 import {useEffect, useState} from "react";
 import {Loader} from "../components/Loader";
+import moment from "moment";
 
-export function RecipeDetailPage() {
+
+export const RecipeDetailPage = () => {
   const {slug} = useParams();
 
   const [detail, setDetail] = useState(null);
@@ -34,18 +36,26 @@ export function RecipeDetailPage() {
   }
 
   const convertTime = () => {
-    let hours = Math.floor(detail.preparationTime/60)
+    let hours = Math.floor(detail.preparationTime / 60)
     let minutes = detail.preparationTime % 60
 
-    if(hours < 10){
-      hours = "0" + hours
+    if (hours === 0) {
+      if (hours < 10) {
+        hours = "0" + hours
+
+      }
     }
-    if(minutes< 10){
+    if (minutes < 10) {
       minutes = "0" + minutes
     }
-    return(
-      `${hours}h:${minutes}min`
-    )
+    if (hours === "00") {
+      return (`${minutes}min`)
+    } else if (minutes === "00") {
+      return (
+        `${hours}h`
+      )
+    } else
+      return `${hours}h:${minutes}min`
   }
 
   return (
@@ -65,7 +75,7 @@ export function RecipeDetailPage() {
                   ))}
                 </List>
               )}
-              <Text>{detail.lastModifiedDate}</Text>
+              <Text>{moment(`${detail.lastModifiedDate}`).format('llll')}</Text>
             </Box>
             {detail.directions && <Text ml={20}>{detail.directions}</Text>}
           </Box>

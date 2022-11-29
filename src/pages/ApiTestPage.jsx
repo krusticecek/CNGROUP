@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import {
   Alert,
   AlertIcon,
@@ -19,7 +19,7 @@ import {
   ListItem,
 } from '@chakra-ui/react';
 
-import { api } from '../api';
+import {api} from '../api';
 
 const DEFAULT_STATE = {
   isLoading: false,
@@ -27,8 +27,8 @@ const DEFAULT_STATE = {
   error: null,
 };
 
-export function ApiTestPage() {
-  const [{ data, isLoading, error }, setState] = useState(DEFAULT_STATE);
+export const ApiTestPage = () => {
+  const [{data, isLoading, error}, setState] = useState(DEFAULT_STATE);
   const [id, setId] = useState('');
   const shouldShowData = !isLoading && data;
   const shouldShowError = !isLoading && error;
@@ -41,7 +41,7 @@ export function ApiTestPage() {
     });
   }
 
-  function onFetchSuccess({ data }) {
+  function onFetchSuccess({data}) {
     setState({
       isLoading: false,
       data,
@@ -49,7 +49,7 @@ export function ApiTestPage() {
     });
   }
 
-  function onFetchFailure({ message }) {
+  function onFetchFailure({message}) {
     setState({
       isLoading: false,
       data: null,
@@ -132,7 +132,7 @@ export function ApiTestPage() {
       )}
       {shouldShowError && (
         <Alert status="error" mt={4}>
-          <AlertIcon />
+          <AlertIcon/>
           <AlertTitle mr={2}>{error}</AlertTitle>
         </Alert>
       )}

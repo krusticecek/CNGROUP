@@ -1,11 +1,12 @@
-import {Box, Heading, Text, Input} from '@chakra-ui/react';
+import {Box, Heading, Text, Input, Button, Flex, Spacer} from '@chakra-ui/react';
 import {useEffect, useState} from 'react';
 import {api} from "../api";
 import {Loader} from "../components/Loader";
 import {RecipeList} from "../components/RecipeList";
 import {normalizeSync} from "normalize-diacritics";
+import {Link} from "react-router-dom";
 
-export function RecipeListPage() {
+export const RecipeListPage = () => {
   const [recipes, setRecipes] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -29,7 +30,6 @@ export function RecipeListPage() {
   }
 
 
-
   const filteredRecipes = recipes.filter((recipe) =>
     normalizeSync(recipe.title).toLowerCase().includes(normalizeSync(searchValue).toLowerCase()),
   );
@@ -37,9 +37,13 @@ export function RecipeListPage() {
 
   return (
     <Box px={5}>
-      <Heading display={"flex"} justifyContent={"center"} my={4} color="teal">
-        Recepty
-      </Heading>
+      <Flex minWidth='max-content' alignItems='center' gap='2'>
+        <Box p='2'>
+          <Heading my={4} size='xl' color={"teal"}>Recepty</Heading>
+        </Box>
+        <Spacer/>
+        <Link to={"/new-recipe"}><Button colorScheme='whatsapp'>Přidej recept</Button></Link>
+      </Flex>
       <Input placeholder='Search' value={searchValue} onChange={handleInputValueChange} mb={"20px"}/>
       {isLoading && <Loader/>}
       {error && <Text>{error}</Text>}

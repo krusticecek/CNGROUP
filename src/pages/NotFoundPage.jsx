@@ -1,8 +1,8 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Center, Heading, VStack, Button } from '@chakra-ui/react';
+import {useNavigate} from 'react-router-dom';
+import {Center, Heading, VStack, Button} from '@chakra-ui/react';
 
-export function NotFoundPage() {
+export const NotFoundPage = () => {
   const navigate = useNavigate();
 
   return (
