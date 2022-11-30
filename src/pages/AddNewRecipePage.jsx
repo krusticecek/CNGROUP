@@ -11,15 +11,39 @@ import {
 } from "@chakra-ui/react";
 import {useNavigate} from "react-router-dom";
 import React, {useState} from "react";
+import axios from "axios";
+import moment from "moment";
 
 export const AddNewRecipePage = () => {
   const navigate = useNavigate()
 
-  const [input, setInput] = useState('')
+  const [title, setTitle] = useState('')
+  const [preparationTime,setPreparationTime] = useState(0)
+  const [servings,setServings] = useState(0)
 
-  const handleInputChange = (e) => setInput(e.target.value)
+  const isError = title === ''
 
-  const isError = input === ''
+  // vytvorime data, ktere posleme do api
+  const data = {
+    "title": title,
+    "preparationTime": preparationTime,
+    "serving": servings,
+    "lastModifiedDate": moment.utc()
+  }
+
+  const handleSaveClicked = () =>
+    axios.post("https://exercise.cngroup.dk/api/recipes",data)
+    .then((res)=> {
+      console.log(res.data)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+
+
+
+  //console.log(`prepTime:${preparationTime}, title:${title}, servings: ${servings}`)
+
 
 
   return (
@@ -33,16 +57,16 @@ export const AddNewRecipePage = () => {
           <Button display={"flex"} justifyContent={"flex-end"} onClick={() => navigate('/')}>
             Zpět
           </Button>
-          <Button colorScheme={"whatsapp"} disabled={isError}>Uložit</Button>
+          <Button colorScheme={"whatsapp"} disabled={isError} onClick={handleSaveClicked}>Uložit</Button>
         </ButtonGroup>
       </Flex>
 
       <FormControl isInvalid={isError}>
         <FormLabel>Název receptu</FormLabel>
-        <Input type='name' value={input} onChange={handleInputChange}/>
+        <Input type='name' onChange={x => setTitle(x.target.value)}/>
         {!isError ? (
           <FormHelperText>
-            Recept bude uložen s názvem <Text as={"b"}>{input}</Text>
+            Recept bude uložen s názvem <Text as={"b"}>{title}</Text>
           </FormHelperText>
         ) : (
           <FormErrorMessage m={"5px"}>Chybí název receptu!</FormErrorMessage>
@@ -50,8 +74,8 @@ export const AddNewRecipePage = () => {
       </FormControl>
 
       <FormControl mb={"5px"}>
-        <FormLabel>Doba přípravy</FormLabel>
-        <NumberInput  clampValueOnBlur={false} max={9999} min={0}>
+        <FormLabel>Doba přípravy v minutách</FormLabel>
+        <NumberInput value={preparationTime > 1200 ? 1200 : preparationTime && preparationTime < 0 ? 0 : preparationTime} clampValueOnBlur={false} max={1200} min={0}  onChange={x => setPreparationTime(x)}>
           <NumberInputField/>
           <NumberInputStepper>
             <NumberIncrementStepper/>
@@ -62,7 +86,7 @@ export const AddNewRecipePage = () => {
 
       <FormControl>
         <FormLabel>Počet porcí</FormLabel>
-        <NumberInput  clampValueOnBlur={false} max={20} min={0}>
+        <NumberInput  value={servings > 20 ? 20 : servings && servings < 0 ? 0 : servings} clampValueOnBlur={false} max={20} min={0} onChange={x => setServings(x)}>
           <NumberInputField/>
           <NumberInputStepper>
             <NumberIncrementStepper/>
