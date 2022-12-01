@@ -1,10 +1,10 @@
 import {Box, Button, ButtonGroup, Flex, Heading, List, ListItem, Spacer, Text} from "@chakra-ui/react";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {api} from "../api";
 import {useEffect, useState} from "react";
 import {Loader} from "../components/Loader";
 import moment from "moment";
-//import axios from "axios";
+import axios from "axios";
 
 
 export const RecipeDetailPage = () => {
@@ -13,6 +13,8 @@ export const RecipeDetailPage = () => {
   const [detail, setDetail] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+
+  const navigate = useNavigate()
 
 
   useEffect(() => {
@@ -27,6 +29,7 @@ export const RecipeDetailPage = () => {
 
     getRecipeDetail();
   }, [slug]);
+
 
   if (isLoading) {
     return <Loader/>
@@ -59,20 +62,26 @@ export const RecipeDetailPage = () => {
       return `${hours}h:${minutes}min`
   }
 
+  const handleClick = () => {
+    axios.delete(`https://exercise.cngroup.dk/api/recipes/${detail._id}`).then(() => navigate("/"))
+  }
+
+
   return (
     <Box px={5}>
       {detail && (
         <>
           <Box>
             <Flex minWidth='max-content' alignItems='center' gap='2'>
-            <Box>
-              <Heading display="flex" justifyContent="center" color={"teal"}>{detail.title}</Heading>
-            </Box>
-            <Spacer/>
-            <ButtonGroup>
-              <Button display={"flex"} justifyContent={"flex-end"} colorScheme={"yellow"}>Edit</Button>
-              <Button display={"flex"} justifyContent={"flex-end"} colorScheme={"red"} onClick={()=>console.log(`https://exercise.cngroup.dk/api/recipes/${slug}`)}>Smazat</Button>
-            </ButtonGroup>
+              <Box>
+                <Heading display="flex" justifyContent="center" color={"teal"}>{detail.title}</Heading>
+              </Box>
+              <Spacer/>
+              <ButtonGroup>
+                <Button display={"flex"} justifyContent={"flex-end"} colorScheme={"yellow"}>Edit</Button>
+                <Button type={"button"} display={"flex"} justifyContent={"flex-end"} colorScheme={"red"}
+                        onClick={() => handleClick()}>Smazat</Button>
+              </ButtonGroup>
             </Flex>
           </Box>
           <Box display="flex" justifyContent="space-between" mt={10}>

@@ -18,8 +18,8 @@ export const AddNewRecipePage = () => {
   const navigate = useNavigate()
 
   const [title, setTitle] = useState('')
-  const [preparationTime,setPreparationTime] = useState(0)
-  const [servings,setServings] = useState(0)
+  const [preparationTime, setPreparationTime] = useState(0)
+  const [directions, setDirections] = useState('')
 
   const isError = title === ''
 
@@ -27,22 +27,19 @@ export const AddNewRecipePage = () => {
   const data = {
     "title": title,
     "preparationTime": preparationTime,
+    "directions": directions
   }
 
-  const handleSaveClicked = () =>
-    axios.post("https://exercise.cngroup.dk/api/recipes",data)
-    .then((res)=> {
-      console.log(res.data)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
-
-
-
-  //console.log(`prepTime:${preparationTime}, title:${title}, servings: ${servings}`)
-
-
+  const handleSaveClicked = () => {
+    axios.post("https://exercise.cngroup.dk/api/recipes", data)
+      .then((res) => {
+        console.log(res.data)
+        navigate("/")
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
 
   return (
     <Box>
@@ -55,7 +52,7 @@ export const AddNewRecipePage = () => {
           <Button display={"flex"} justifyContent={"flex-end"} onClick={() => navigate('/')}>
             Zpět
           </Button>
-          <Button colorScheme={"whatsapp"} disabled={isError} onClick={handleSaveClicked}>Uložit</Button>
+          <Button colorScheme={"whatsapp"} disabled={isError} onClick={()=>handleSaveClicked()}>Uložit</Button>
         </ButtonGroup>
       </Flex>
 
@@ -73,7 +70,9 @@ export const AddNewRecipePage = () => {
 
       <FormControl mb={"5px"}>
         <FormLabel>Doba přípravy v minutách</FormLabel>
-        <NumberInput value={preparationTime > 1200 ? 1200 : preparationTime && preparationTime < 0 ? 0 : preparationTime} clampValueOnBlur={false} max={1200} min={0}  onChange={x => setPreparationTime(x)}>
+        <NumberInput
+          value={preparationTime > 1200 ? 1200 : preparationTime && preparationTime < 0 ? 0 : preparationTime}
+          clampValueOnBlur={false} max={1200} min={0} onChange={x => setPreparationTime(x)}>
           <NumberInputField/>
           <NumberInputStepper>
             <NumberIncrementStepper/>
@@ -82,16 +81,11 @@ export const AddNewRecipePage = () => {
         </NumberInput>
       </FormControl>
 
-      <FormControl>
-        <FormLabel>Počet porcí</FormLabel>
-        <NumberInput  value={servings > 20 ? 20 : servings && servings < 0 ? 0 : servings} clampValueOnBlur={false} max={20} min={0} onChange={x => setServings(x)}>
-          <NumberInputField/>
-          <NumberInputStepper>
-            <NumberIncrementStepper/>
-            <NumberDecrementStepper/>
-          </NumberInputStepper>
-        </NumberInput>
-      </FormControl>
+      <Box>
+        <legend>Postup</legend>
+        <textarea placeholder={"Zde napiš postup přípravy"} value={directions} onChange={x=>setDirections(x.target.value)} ></textarea>
+      </Box>
+
 
     </Box>
   )
