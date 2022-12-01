@@ -12,7 +12,7 @@ import {
 import {useNavigate} from "react-router-dom";
 import React, {useState} from "react";
 import axios from "axios";
-import moment from "moment";
+
 
 export const AddNewRecipePage = () => {
   const navigate = useNavigate()
@@ -27,8 +27,6 @@ export const AddNewRecipePage = () => {
   const data = {
     "title": title,
     "preparationTime": preparationTime,
-    "serving": servings,
-    "lastModifiedDate": moment.utc()
   }
 
   const handleSaveClicked = () =>

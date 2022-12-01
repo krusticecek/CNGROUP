@@ -1,9 +1,10 @@
-import {Box, Heading, List, ListItem, Text} from "@chakra-ui/react";
+import {Box, Button, ButtonGroup, Flex, Heading, List, ListItem, Spacer, Text} from "@chakra-ui/react";
 import {useParams} from "react-router-dom";
 import {api} from "../api";
 import {useEffect, useState} from "react";
 import {Loader} from "../components/Loader";
 import moment from "moment";
+//import axios from "axios";
 
 
 export const RecipeDetailPage = () => {
@@ -62,7 +63,18 @@ export const RecipeDetailPage = () => {
     <Box px={5}>
       {detail && (
         <>
-          <Heading display="flex" justifyContent="center" color={"teal"}>{detail.title}</Heading>
+          <Box>
+            <Flex minWidth='max-content' alignItems='center' gap='2'>
+            <Box>
+              <Heading display="flex" justifyContent="center" color={"teal"}>{detail.title}</Heading>
+            </Box>
+            <Spacer/>
+            <ButtonGroup>
+              <Button display={"flex"} justifyContent={"flex-end"} colorScheme={"yellow"}>Edit</Button>
+              <Button display={"flex"} justifyContent={"flex-end"} colorScheme={"red"} onClick={()=>console.log(`https://exercise.cngroup.dk/api/recipes/${slug}`)}>Smazat</Button>
+            </ButtonGroup>
+            </Flex>
+          </Box>
           <Box display="flex" justifyContent="space-between" mt={10}>
             <Box>
               <Text mb={2}>⏲️️ {convertTime()}</Text>
