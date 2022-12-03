@@ -23,9 +23,6 @@ export const EditDetailRecipePage = () => {
   const [directions, setDirections] = useState('')
   const isError = title === ''
 
-  window.onload = () => {
-    document.querySelector('#inputEdit').focus()
-  }
   useEffect(() => {
     axios.get(`https://exercise.cngroup.dk/api/recipes/${slug}`).then(res => {
       setDetail(res.data);
@@ -45,8 +42,7 @@ export const EditDetailRecipePage = () => {
 
   const handleSaveClicked = () => {
     axios.post(`https://exercise.cngroup.dk/api/recipes/${detail._id}`, data)
-      .then((res) => {
-        console.log(res.data)
+      .then(() => {
         navigate("/")
       })
       .catch((err) => {
@@ -59,7 +55,7 @@ export const EditDetailRecipePage = () => {
     <Box>
       <Flex minWidth='max-content' alignItems='center' gap='2'>
         <Box p='2'>
-          <Heading my={4} size='xl' color={"teal"}>{detail.title}</Heading>
+          <Heading my={4} size='xl' color={"teal"}>{title}</Heading>
         </Box>
         <Spacer/>
         <ButtonGroup>
@@ -72,7 +68,7 @@ export const EditDetailRecipePage = () => {
 
       <FormControl isInvalid={isError}>
         <FormLabel>Název receptu</FormLabel>
-        <Input id='inputEdit' type='text' onChange={x => setTitle(x.target.value)} defaultValue={`${title}`} autoFocus/>
+        <Input type='text' onChange={x => setTitle(x.target.value)} defaultValue={`${title}`} autoFocus/>
         {!isError ? (
           <FormHelperText>
             Recept bude uložen s názvem <Text as={"b"}>{title}</Text>
