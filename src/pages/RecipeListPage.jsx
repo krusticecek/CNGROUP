@@ -44,7 +44,7 @@ export const RecipeListPage = () => {
         <Spacer/>
         <Link to={"/new-recipe"}><Button colorScheme='whatsapp'>Přidej recept</Button></Link>
       </Flex>
-      <Input placeholder='Search' value={searchValue} onChange={handleInputValueChange} mb={"20px"}/>
+      <Input autoFocus placeholder='Search' value={searchValue} onChange={handleInputValueChange} mb={"20px"}/>
       {isLoading && <Loader/>}
       {error && <Text>{error}</Text>}
       <RecipeList recipes={filteredRecipes}/>

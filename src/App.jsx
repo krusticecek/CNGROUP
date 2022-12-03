@@ -9,6 +9,7 @@ import {RecipeListPage} from './pages/RecipeListPage';
 import {RecipeDetailPage} from './pages/RecipeDetailPage';
 import {SideDishesPage} from "./pages/SideDishesPage";
 import {AddNewRecipePage} from "./pages/AddNewRecipePage";
+import {EditDetailRecipePage} from "./pages/EditDetailRecipePage"
 
 export const App = () => {
   return (
@@ -22,6 +23,7 @@ export const App = () => {
             <Route path="/side-dishes" element={<SideDishesPage/>}/>
             <Route path="/new-recipe" element={<AddNewRecipePage/>}/>
             <Route path="*" element={<NotFoundPage/>}/>
+          <Route path="recept/:slug/edit" element={<EditDetailRecipePage/>}/>
           </Routes>
         </AppLayout>
       </ChakraProvider>

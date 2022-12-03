@@ -1,6 +1,15 @@
-import {Box, Button, ButtonGroup, Flex, Heading, List, ListItem, Spacer, Text} from "@chakra-ui/react";
-import {useNavigate, useParams} from "react-router-dom";
-import {api} from "../api";
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Flex,
+  Heading,
+  List,
+  ListItem,
+  Spacer,
+  Text,
+} from "@chakra-ui/react";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {Loader} from "../components/Loader";
 import moment from "moment";
@@ -14,21 +23,17 @@ export const RecipeDetailPage = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
 
   useEffect(() => {
-    function getRecipeDetail() {
       setIsLoading(true);
-      api
-        .get(`/recipes/${slug}`)
+      axios
+        .get(`https://exercise.cngroup.dk/api/recipes/${slug}`)
         .then(response => setDetail(response.data))
         .catch((error) => setError(error))
         .finally(() => setIsLoading(false));
-    }
-
-    getRecipeDetail();
-  }, [slug]);
+    },[]);
 
 
   if (isLoading) {
@@ -42,8 +47,10 @@ export const RecipeDetailPage = () => {
   const convertTime = () => {
     let hours = Math.floor(detail.preparationTime / 60)
     let minutes = detail.preparationTime % 60
+    hours = hours.toString()
+    minutes = minutes.toString()
 
-    if (hours === 0) {
+    if (hours === "0") {
       if (hours < 10) {
         hours = "0" + hours
 
@@ -52,6 +59,7 @@ export const RecipeDetailPage = () => {
     if (minutes < 10) {
       minutes = "0" + minutes
     }
+
     if (hours === "00") {
       return (`${minutes}min`)
     } else if (minutes === "00") {
@@ -78,7 +86,7 @@ export const RecipeDetailPage = () => {
               </Box>
               <Spacer/>
               <ButtonGroup>
-                <Button display={"flex"} justifyContent={"flex-end"} colorScheme={"yellow"}>Edit</Button>
+                <Link to={`/recept/${slug}/edit`}><Button display={"flex"} justifyContent={"flex-end"} colorScheme={"yellow"}>Edit</Button></Link>
                 <Button type={"button"} display={"flex"} justifyContent={"flex-end"} colorScheme={"red"}
                         onClick={() => handleClick()}>Smazat</Button>
               </ButtonGroup>

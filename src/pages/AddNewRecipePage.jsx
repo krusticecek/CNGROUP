@@ -7,7 +7,7 @@ import {
   FormLabel,
   Heading,
   Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper,
-  Spacer, Text
+  Spacer, Text, Textarea
 } from "@chakra-ui/react";
 import {useNavigate} from "react-router-dom";
 import React, {useState} from "react";
@@ -52,13 +52,13 @@ export const AddNewRecipePage = () => {
           <Button display={"flex"} justifyContent={"flex-end"} onClick={() => navigate('/')}>
             Zpět
           </Button>
-          <Button colorScheme={"whatsapp"} disabled={isError} onClick={()=>handleSaveClicked()}>Uložit</Button>
+          <Button colorScheme={"whatsapp"} disabled={isError} onClick={() => handleSaveClicked()}>Uložit</Button>
         </ButtonGroup>
       </Flex>
 
       <FormControl isInvalid={isError}>
         <FormLabel>Název receptu</FormLabel>
-        <Input type='name' onChange={x => setTitle(x.target.value)}/>
+        <Input autoFocus type='text' onChange={x => setTitle(x.target.value)}/>
         {!isError ? (
           <FormHelperText>
             Recept bude uložen s názvem <Text as={"b"}>{title}</Text>
@@ -82,8 +82,9 @@ export const AddNewRecipePage = () => {
       </FormControl>
 
       <Box>
-        <legend>Postup</legend>
-        <textarea placeholder={"Zde napiš postup přípravy"} value={directions} onChange={x=>setDirections(x.target.value)} ></textarea>
+        <Heading display={"flex"} justifyContent={"center"} m={4}>Postup</Heading>
+        <Textarea size={"lg"} rows={20} placeholder={"Zde napiš postup přípravy"} value={directions}
+                  onChange={x => setDirections(x.target.value)}></Textarea>
       </Box>
 
 
