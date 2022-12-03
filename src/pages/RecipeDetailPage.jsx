@@ -86,6 +86,7 @@ export const RecipeDetailPage = () => {
               </Box>
               <Spacer/>
               <ButtonGroup>
+                <Link to={'/'}><Button display={"flex"} justifyContent={"flex-end"}>Zpět</Button></Link>
                 <Link to={`/recept/${slug}/edit`}><Button display={"flex"} justifyContent={"flex-end"} colorScheme={"yellow"}>Edit</Button></Link>
                 <Button type={"button"} display={"flex"} justifyContent={"flex-end"} colorScheme={"red"}
                         onClick={() => handleClick()}>Smazat</Button>

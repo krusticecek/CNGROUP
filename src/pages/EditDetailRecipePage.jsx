@@ -60,7 +60,7 @@ export const EditDetailRecipePage = () => {
         <Spacer/>
         <ButtonGroup>
           <Button display={"flex"} justifyContent={"flex-end"} onClick={() => navigate(`/recept/${slug}`)}>
-            Zpět
+            Zrušit
           </Button>
           <Button colorScheme={"whatsapp"} disabled={isError} onClick={() => handleSaveClicked()}>Uložit</Button>
         </ButtonGroup>
