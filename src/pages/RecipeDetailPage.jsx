@@ -33,7 +33,7 @@ export const RecipeDetailPage = () => {
         .then(response => setDetail(response.data))
         .catch((error) => setError(error))
         .finally(() => setIsLoading(false));
-    },[]);
+    },[slug]);
 
 
   if (isLoading) {

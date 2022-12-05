@@ -1,10 +1,10 @@
 import {Box, Heading, Text, Input, Button, Flex, Spacer} from '@chakra-ui/react';
 import {useEffect, useState} from 'react';
-import {api} from "../api";
 import {Loader} from "../components/Loader";
 import {RecipeList} from "../components/RecipeList";
 import {normalizeSync} from "normalize-diacritics";
 import {Link} from "react-router-dom";
+import axios from "axios";
 
 export const RecipeListPage = () => {
   const [recipes, setRecipes] = useState([]);
@@ -16,7 +16,7 @@ export const RecipeListPage = () => {
   useEffect(() => {
     function getRecipes() {
       setIsLoading(true);
-      api.get('/recipes')
+      axios.get('https://exercise.cngroup.dk/api/recipes/')
         .then(response => setRecipes(response.data))
         .catch((error) => setError(error))
         .finally(() => setIsLoading(false));

@@ -1,20 +1,19 @@
 import React, {useEffect, useState} from "react";
 import {Box, Heading, ListItem, UnorderedList} from "@chakra-ui/react";
-import {api} from "../api";
+import axios from "axios";
 
 export const SideDishesPage = () => {
   const [sides, setSides] = useState([]);
 
 
   useEffect(() => {
-    function getIngredients() {
-      api.get('/recipes/side-dishes')
+    const getIngredients = () => {
+      axios.get('https://exercise.cngroup.dk/api/recipes/side-dishes')
         .then(response => setSides(response.data))
     }
 
     getIngredients();
   }, []);
-
 
 
   return (
