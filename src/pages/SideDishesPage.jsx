@@ -7,12 +7,12 @@ export const SideDishesPage = () => {
 
 
   useEffect(() => {
-    const getIngredients = () => {
+    const getSides = () => {
       axios.get('https://exercise.cngroup.dk/api/recipes/side-dishes')
         .then(response => setSides(response.data))
     }
 
-    getIngredients();
+    getSides();
   }, []);
 
 
