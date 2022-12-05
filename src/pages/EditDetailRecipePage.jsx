@@ -24,17 +24,12 @@ export const EditDetailRecipePage = () => {
   const isError = title === ''
 
   useEffect(() => {
-    const getEditData = () => {
-
       axios.get(`https://exercise.cngroup.dk/api/recipes/${slug}`).then(res => {
         setDetail(res.data);
         setTitle(res.data.title);
         setDirections(res.data.directions)
         setPreparationTime(res.data.preparationTime)
       });
-      getEditData()
-    }
-
   }, [slug]);
 
 

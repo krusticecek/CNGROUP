@@ -10,9 +10,8 @@ import {
   Spacer, Text, Textarea
 } from "@chakra-ui/react";
 import {useNavigate} from "react-router-dom";
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import axios from "axios";
-
 
 export const AddNewRecipePage = () => {
   const navigate = useNavigate()
@@ -20,6 +19,7 @@ export const AddNewRecipePage = () => {
   const [title, setTitle] = useState('')
   const [preparationTime, setPreparationTime] = useState(0)
   const [directions, setDirections] = useState('')
+  const [sides, setSides] = useState([])
 
   const isError = title === ''
 
@@ -40,6 +40,19 @@ export const AddNewRecipePage = () => {
         console.log(err)
       })
   }
+
+  useEffect(() => {
+    axios.get('https://exercise.cngroup.dk/api/recipes/side-dishes')
+      .then(response => setSides(response.data))
+  }, []);
+
+  const sideOptions =
+    [
+      sides.map((side)=>
+        `name:${side}`
+      )
+    ]
+  console.log(sideOptions)
 
   return (
     <Box>
@@ -82,12 +95,20 @@ export const AddNewRecipePage = () => {
       </FormControl>
 
       <Box>
-        <Heading display={"flex"} justifyContent={"center"} m={4}>Postup</Heading>
-        <Textarea size={"lg"} rows={20} placeholder={"Zde napiš postup přípravy"} value={directions}
+        <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Postup</Heading>
+        <Textarea size={"xs"} rows={20} placeholder={"Zde napiš postup přípravy"} value={directions}
                   onChange={x => setDirections(x.target.value)}></Textarea>
       </Box>
 
+      <Box>
+        <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Přílohy</Heading>
+      </Box>
+      <Box>
+        <Heading>Přílohy</Heading>
 
+      </Box>
     </Box>
   )
 }
+
+
