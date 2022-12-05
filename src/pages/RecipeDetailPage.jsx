@@ -27,13 +27,17 @@ export const RecipeDetailPage = () => {
 
 
   useEffect(() => {
+    const getDetail = () => {
+
       setIsLoading(true);
       axios
         .get(`https://exercise.cngroup.dk/api/recipes/${slug}`)
         .then(response => setDetail(response.data))
         .catch((error) => setError(error))
         .finally(() => setIsLoading(false));
-    },[slug]);
+    }
+    getDetail()
+  }, [slug]);
 
 
   if (isLoading) {
@@ -87,7 +91,8 @@ export const RecipeDetailPage = () => {
               <Spacer/>
               <ButtonGroup>
                 <Link to={'/'}><Button display={"flex"} justifyContent={"flex-end"}>Zpět</Button></Link>
-                <Link to={`/recept/${slug}/edit`}><Button display={"flex"} justifyContent={"flex-end"} colorScheme={"yellow"}>Edit</Button></Link>
+                <Link to={`/recept/${slug}/edit`}><Button display={"flex"} justifyContent={"flex-end"}
+                                                          colorScheme={"yellow"}>Edit</Button></Link>
                 <Button type={"button"} display={"flex"} justifyContent={"flex-end"} colorScheme={"red"}
                         onClick={() => handleClick()}>Smazat</Button>
               </ButtonGroup>

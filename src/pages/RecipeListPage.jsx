@@ -14,7 +14,7 @@ export const RecipeListPage = () => {
 
 
   useEffect(() => {
-    function getRecipes() {
+    const getRecipes = () => {
       setIsLoading(true);
       axios.get('https://exercise.cngroup.dk/api/recipes/')
         .then(response => setRecipes(response.data))
