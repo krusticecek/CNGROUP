@@ -8,7 +8,7 @@ import {
   FormHelperText,
   FormLabel,
   Heading,
-  Input,
+  Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper,
   Spacer, Text
 } from "@chakra-ui/react";
 import React, {useEffect, useState} from "react";
@@ -78,6 +78,18 @@ export const EditDetailRecipePage = () => {
         )}
       </FormControl>
 
+      <FormControl mb={"5px"}>
+        <FormLabel>Doba přípravy v minutách</FormLabel>
+        <NumberInput
+          value={preparationTime > 1200 ? 1200 : preparationTime && preparationTime < 0 ? 0 : preparationTime}
+          clampValueOnBlur={false} max={1200} min={0} onChange={x => setPreparationTime(x)}>
+          <NumberInputField/>
+          <NumberInputStepper>
+            <NumberIncrementStepper/>
+            <NumberDecrementStepper/>
+          </NumberInputStepper>
+        </NumberInput>
+      </FormControl>
     </Box>
   )
 }
