@@ -14,6 +14,7 @@ import {useEffect, useState} from "react";
 import {Loader} from "../components/Loader";
 import moment from "moment";
 import axios from "axios";
+import ReactMarkdown from "react-markdown";
 
 
 export const RecipeDetailPage = () => {
@@ -112,7 +113,8 @@ export const RecipeDetailPage = () => {
               )}
               <Text>{moment(`${detail.lastModifiedDate}`).format('llll')}</Text>
             </Box>
-            {detail.directions && <Text ml={20}>{detail.directions}</Text>}
+            <Box m={"5px"}><ReactMarkdown>{detail.directions}</ReactMarkdown>
+            </Box>
           </Box>
         </>
       )}

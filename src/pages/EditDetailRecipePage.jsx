@@ -9,9 +9,10 @@ import {
   FormLabel,
   Heading,
   Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper,
-  Spacer, Text
+  Spacer, Text, Textarea
 } from "@chakra-ui/react";
 import React, {useEffect, useState} from "react";
+import ReactMarkdown from "react-markdown";
 
 export const EditDetailRecipePage = () => {
 
@@ -90,6 +91,14 @@ export const EditDetailRecipePage = () => {
           </NumberInputStepper>
         </NumberInput>
       </FormControl>
+
+      <Box>
+        <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Postup</Heading>
+        {/* upraveni na markdown textarea*/}
+        <Textarea size={"xs"} rows={20} placeholder={"Zde napiš postup přípravy"} value={directions}
+                  onChange={x => setDirections(x.target.value)}></Textarea>
+        <ReactMarkdown children={directions}></ReactMarkdown>
+      </Box>
     </Box>
   )
 }

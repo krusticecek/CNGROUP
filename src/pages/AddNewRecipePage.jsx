@@ -12,7 +12,6 @@ import {
 import {useNavigate} from "react-router-dom";
 import React, {useState, useEffect} from "react";
 import axios from "axios";
-
 export const AddNewRecipePage = () => {
   const navigate = useNavigate()
 
@@ -48,7 +47,7 @@ export const AddNewRecipePage = () => {
   const sideOptions =
     [
       sides.map((side)=>
-        `name:${side}`
+        side
       )
     ]
   console.log(sideOptions)
@@ -98,6 +97,7 @@ export const AddNewRecipePage = () => {
         {/* upraveni na markdown textarea*/}
         <Textarea size={"xs"} rows={20} placeholder={"Zde napiš postup přípravy"} value={directions}
                   onChange={x => setDirections(x.target.value)}></Textarea>
+
       </Box>
 
       <Box>
