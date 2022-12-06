@@ -32,8 +32,7 @@ export const AddNewRecipePage = () => {
 
   const handleSaveClicked = () => {
     axios.post("https://exercise.cngroup.dk/api/recipes", data)
-      .then((res) => {
-        console.log(res.data)
+      .then(() => {
         navigate("/")
       })
       .catch((err) => {
@@ -96,15 +95,17 @@ export const AddNewRecipePage = () => {
 
       <Box>
         <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Postup</Heading>
+        {/* upraveni na markdown textarea*/}
         <Textarea size={"xs"} rows={20} placeholder={"Zde napiš postup přípravy"} value={directions}
                   onChange={x => setDirections(x.target.value)}></Textarea>
       </Box>
 
       <Box>
         <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Přílohy</Heading>
+        {/* pridani autocompletu zde*/}
       </Box>
       <Box>
-        <Heading>Přílohy</Heading>
+        <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Ingredience</Heading>
 
       </Box>
     </Box>
