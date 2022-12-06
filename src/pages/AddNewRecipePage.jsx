@@ -118,7 +118,7 @@ export const AddNewRecipePage = () => {
       <Box>
         <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Přílohy</Heading>
         {/* pridani autocompletu zde*/}
-        <Input type='text' onChange={x => setSideDish(x.target.value)}/>
+        <Input  type='text' onChange={x => setSideDish(x.target.value)}/>
       </Box>
 
       <FormLabel display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Ingredience</FormLabel>
