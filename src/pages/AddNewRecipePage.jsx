@@ -12,13 +12,20 @@ import {
 import {useNavigate} from "react-router-dom";
 import React, {useState, useEffect} from "react";
 import axios from "axios";
+// import {ReactSearchAutocomplete} from "react-search-autocomplete";
+import ReactMarkdown from "react-markdown";
+
 export const AddNewRecipePage = () => {
   const navigate = useNavigate()
 
   const [title, setTitle] = useState('')
   const [preparationTime, setPreparationTime] = useState(0)
   const [directions, setDirections] = useState('')
-  const [sides, setSides] = useState([])
+  const [sideDish, setSideDish] = useState('')
+  const [amount, setAmount] = useState(0)
+  // const [amountUnit, setAmountUnit] = useState('')
+  // const [name, setName] = useState('')
+  // const [ingredients,setIngredients] = useState([])
 
   const isError = title === ''
 
@@ -26,8 +33,10 @@ export const AddNewRecipePage = () => {
   const data = {
     "title": title,
     "preparationTime": preparationTime,
-    "directions": directions
+    "directions": directions,
+    "sideDish": sideDish,
   }
+
 
   const handleSaveClicked = () => {
     axios.post("https://exercise.cngroup.dk/api/recipes", data)
@@ -41,16 +50,14 @@ export const AddNewRecipePage = () => {
 
   useEffect(() => {
     axios.get('https://exercise.cngroup.dk/api/recipes/side-dishes')
-      .then(response => setSides(response.data))
+      .then(response => setSideDish(response.data))
   }, []);
 
-  const sideOptions =
-    [
-      sides.map((side)=>
-        side
-      )
-    ]
-  console.log(sideOptions)
+  // useEffect(() => {
+  //   axios.get('https://exercise.cngroup.dk/api/recipes/ingredients')
+  //     .then(response => setIngredients(response.data))
+  // }, []);
+  //
 
   return (
     <Box>
@@ -97,16 +104,29 @@ export const AddNewRecipePage = () => {
         {/* upraveni na markdown textarea*/}
         <Textarea size={"xs"} rows={20} placeholder={"Zde napiš postup přípravy"} value={directions}
                   onChange={x => setDirections(x.target.value)}></Textarea>
-
+        <ReactMarkdown>{directions}</ReactMarkdown>
       </Box>
 
       <Box>
         <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Přílohy</Heading>
         {/* pridani autocompletu zde*/}
+        {/*<ReactSearchAutocomplete items={itms}/>*/}
+        <Input type={"text"} onChange={x => setSideDish(x.target.value)}></Input>
       </Box>
       <Box>
-        <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Ingredience</Heading>
-
+        <FormLabel display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Ingredience</FormLabel>
+        <NumberInput
+          value={amount > 100 ? 100 : amount && amount < 0 ? 0 : amount}
+          clampValueOnBlur={false} max={100} min={0} onChange={x => setAmount(x)} mb={"15px"}>
+          <NumberInputField/>
+          <NumberInputStepper>
+            <NumberIncrementStepper/>
+            <NumberDecrementStepper/>
+          </NumberInputStepper>
+        </NumberInput>
+        <Input placeholder={"Jednotka"} mb={"15px"} type={"text"} onChange={x => setAmountUnit(x.target.value)}></Input>
+        <Input placeholder={"Název"} mb={"15px"} type={"text"} onChange={x => setName(x.target.value)}></Input>
+        <Button>Přidat</Button>
       </Box>
     </Box>
   )
