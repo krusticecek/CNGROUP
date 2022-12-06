@@ -2,8 +2,7 @@ import {
   Box,
   Button,
   ButtonGroup,
-  Flex,
-  Heading,
+  Flex, Heading,
   List,
   ListItem,
   Spacer,
@@ -99,7 +98,7 @@ export const RecipeDetailPage = () => {
               </ButtonGroup>
             </Flex>
           </Box>
-          <Box display="flex" justifyContent="space-between" mt={10}>
+          <Box display="flex" justifyContent={"space-between"} mt={10}>
             <Box>
               <Text mb={2}>⏲️️ {convertTime()}</Text>
               {detail.ingredients && (
