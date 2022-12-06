@@ -62,7 +62,8 @@ export const EditDetailRecipePage = () => {
   const handleSaveClicked = () => {
     axios.post(`https://exercise.cngroup.dk/api/recipes/${detail._id}`, data)
       .then(() => {
-        navigate("/")
+        navigate(`/recept/${title}`)
+        // navigate(`/`)
       })
       .catch((err) => {
         console.log(err)

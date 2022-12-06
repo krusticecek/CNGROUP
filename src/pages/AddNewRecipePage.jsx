@@ -48,7 +48,8 @@ export const AddNewRecipePage = () => {
   const handleSaveClicked = () => {
     axios.post("https://exercise.cngroup.dk/api/recipes", data)
       .then(() => {
-        navigate("/")
+        navigate(`/recept/${title}`)
+        // navigate(`/`)
       })
       .catch((err) => {
         console.log(err)
@@ -81,7 +82,7 @@ export const AddNewRecipePage = () => {
         <Input autoFocus type='text' onChange={x => setTitle(x.target.value)}/>
         {!isError ? (
           <FormHelperText>
-            Recept bude uložen s názvem <Text as={"b"}>{title}</Text>
+            Recept bude uložen pod názvem <Text as={"b"}>{title}</Text>
           </FormHelperText>
         ) : (
           <FormErrorMessage m={"5px"}>Chybí název receptu!</FormErrorMessage>
