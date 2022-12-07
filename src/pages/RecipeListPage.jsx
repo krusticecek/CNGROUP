@@ -4,7 +4,7 @@ import {Loader} from "../components/Loader";
 import {RecipeList} from "../components/RecipeList";
 import {normalizeSync} from "normalize-diacritics";
 import {Link} from "react-router-dom";
-import axios from "axios";
+import {api} from "../api";
 
 export const RecipeListPage = () => {
   const [recipes, setRecipes] = useState([]);
@@ -16,7 +16,7 @@ export const RecipeListPage = () => {
   useEffect(() => {
     const getRecipes = () => {
       setIsLoading(true);
-      axios.get('https://exercise.cngroup.dk/api/recipes/')
+      api.get('/recipes/')
         .then(response => setRecipes(response.data))
         .catch((error) => setError(error))
         .finally(() => setIsLoading(false));

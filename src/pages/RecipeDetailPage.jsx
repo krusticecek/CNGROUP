@@ -12,8 +12,8 @@ import {Link, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {Loader} from "../components/Loader";
 import moment from "moment";
-import axios from "axios";
 import ReactMarkdown from "react-markdown";
+import {api} from "../api";
 
 
 export const RecipeDetailPage = () => {
@@ -30,8 +30,8 @@ export const RecipeDetailPage = () => {
     const getDetail = () => {
 
       setIsLoading(true);
-      axios
-        .get(`https://exercise.cngroup.dk/api/recipes/${slug}`)
+      api
+        .get(`/recipes/${slug}`)
         .then(response => setDetail(response.data))
         .catch((error) => setError(error))
         .finally(() => setIsLoading(false));
@@ -75,8 +75,10 @@ export const RecipeDetailPage = () => {
   }
 
   const handleClick = () => {
-    axios.delete(`https://exercise.cngroup.dk/api/recipes/${detail._id}`).then(() => navigate("/"))
+    api.delete(`/recipes/${detail._id}`).then(() => navigate("/"))
   }
+
+/// directions pres map
 
 
   return (

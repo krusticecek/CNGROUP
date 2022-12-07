@@ -1,5 +1,4 @@
 import {useNavigate, useParams} from "react-router-dom";
-import axios from "axios";
 import {
   Box,
   Button,
@@ -13,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import React, {useEffect, useState} from "react";
 import ReactMarkdown from "react-markdown";
+import {api} from "../api";
 
 export const EditDetailRecipePage = () => {
 
@@ -31,7 +31,7 @@ export const EditDetailRecipePage = () => {
   const isError = title === ''
 
   useEffect(() => {
-      axios.get(`https://exercise.cngroup.dk/api/recipes/${slug}`).then(res => {
+      api.get(`/recipes/${slug}`).then(res => {
         setDetail(res.data);
         setTitle(res.data.title);
         setDirections(res.data.directions)
@@ -42,7 +42,7 @@ export const EditDetailRecipePage = () => {
       });
   }, [slug]);
 
-  console.log(ingredients)
+
 
   // vytvorime data, ktere posleme do api
   const data = {
@@ -60,7 +60,7 @@ export const EditDetailRecipePage = () => {
   }
 
   const handleSaveClicked = () => {
-    axios.post(`https://exercise.cngroup.dk/api/recipes/${detail._id}`, data)
+    api.post(`/recipes/${detail._id}`, data)
       .then(() => {
         navigate(`/recept/${title}`)
         // navigate(`/`)

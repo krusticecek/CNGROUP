@@ -1,17 +1,29 @@
 import {
   Box,
-  Button, ButtonGroup,
+  Button,
+  ButtonGroup,
   Flex,
-  FormControl, FormErrorMessage,
+  FormControl,
+  FormErrorMessage,
   FormHelperText,
-  FormLabel, Grid, GridItem, Heading,
-  Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper,
-  Spacer, Text, Textarea
+  FormLabel,
+  Grid,
+  GridItem,
+  Heading,
+  Input,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  Spacer,
+  Text,
+  Textarea
 } from "@chakra-ui/react";
 import {useNavigate} from "react-router-dom";
-import React, {useState, useEffect} from "react";
-import axios from "axios";
+import React, {useState} from "react";
 import ReactMarkdown from "react-markdown";
+import {api} from "../api";
 
 export const AddNewRecipePage = () => {
   const navigate = useNavigate()
@@ -25,7 +37,7 @@ export const AddNewRecipePage = () => {
   const [amountUnit, setAmountUnit] = useState('')
   const [name, setName] = useState('')
 
-
+  const [ingedience,setIngredience] = useState([])
   const isError = title === ''
 
   // vytvorime data, ktere posleme do api
@@ -34,19 +46,13 @@ export const AddNewRecipePage = () => {
     "preparationTime": preparationTime,
     "directions": directions,
     "sideDish": sideDish,
-    "ingredients": [
-      {
-        "amount": amount,
-        "amountUnit": amountUnit,
-        "name": name
-      }
-    ]
+    "ingredients": ingedience
   }
 
   console.log(data)
 
   const handleSaveClicked = () => {
-    axios.post("https://exercise.cngroup.dk/api/recipes", data)
+    api.post("/recipes", data)
       .then(() => {
         navigate(`/recept/${title}`)
         // navigate(`/`)
@@ -56,11 +62,10 @@ export const AddNewRecipePage = () => {
       })
   }
 
-  useEffect(() => {
-    axios.get('https://exercise.cngroup.dk/api/recipes/side-dishes')
-      .then(response => setSideDish(response.data))
-  }, []);
-
+  const handleSaveIngredience = () => {
+    setIngredience(ingedience =>[...ingedience,{"name":name,"amount":amount,"amountUnit":amountUnit}])
+  }
+  console.log(ingedience)
 
   return (
     <Box>
@@ -143,6 +148,10 @@ export const AddNewRecipePage = () => {
                  onChange={x => setName(x.target.value)}></Input>
         </GridItem>
       </Grid>
+      <Box display={"flex"} justifyContent={"center"}>
+        <Button onClick={()=>handleSaveIngredience()}>Uložit</Button>
+
+      </Box>
     </Box>
   )
 }
