@@ -51,11 +51,11 @@ export const AddNewRecipePage = () => {
     "ingredients": ingredients
   }
 
-
+  const titlenondiacritic = title.normalize("NFKD").replace(/\p{Diacritic}/gu, "")
   const handleSaveClicked = () => {
     api.post("/recipes", data)
       .then(() => {
-        navigate(`/recept/${title}`)
+        navigate(`/recept/${titlenondiacritic}`)
         // navigate(`/`)
       })
       .catch((err) => {
@@ -80,8 +80,8 @@ export const AddNewRecipePage = () => {
       console.log("Musí obsahovat název")
     }
   }
+
   ingredients.forEach((ingredient, x) => ingredient.id = x + 1)
-  console.log(ingredients)
 
 
 
@@ -134,6 +134,8 @@ export const AddNewRecipePage = () => {
                     onChange={x => setDirections(x.target.value)}></Textarea>
         </Box>
         <Box>
+          <Heading as='h2' size='xl' color={"teal"}>Náhled
+          </Heading>
           <ReactMarkdown>{directions}</ReactMarkdown>
         </Box>
       </Box>
@@ -169,6 +171,7 @@ export const AddNewRecipePage = () => {
       <Box display={"flex"} justifyContent={"center"} m={"15px"}>
         <Button onClick={() => handleSaveIngredients()}>Uložit</Button>
       </Box>
+
       <Box>
         <>
             {ingredients.map((ingredient) => (
@@ -176,7 +179,8 @@ export const AddNewRecipePage = () => {
               <ListItem>
                 {ingredient.amount} {ingredient.amountUnit} {ingredient.name}
                 <Button type={"button"}
-                        onClick={() => {
+                        onClick={() =>
+                        {
                           setIngredients(ingredients.filter(current => current.id !== ingredient.id))
                         }} background={"red"} m={"5px"}>Smazat</Button>
               </ListItem>

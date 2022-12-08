@@ -52,7 +52,6 @@ export const EditDetailRecipePage = () => {
         setPreparationTime(res.data.preparationTime)
         setSideDish(res.data.sideDish)
         setIngredients(res.data.ingredients)
-        console.log(res.data)
       });
   }, [slug]);
 
@@ -67,10 +66,12 @@ export const EditDetailRecipePage = () => {
     "ingredients": ingredients
   }
 
+  const titlenondiacritic = title.normalize("NFKD").replace(/\p{Diacritic}/gu, "")
+
   const handleSaveClicked = () => {
     api.post(`/recipes/${detail._id}`, data)
       .then(() => {
-        navigate(`/recept/${title}`)
+        navigate(`/recept/${titlenondiacritic}`)
         // navigate(`/`)
       })
       .catch((err) => {
@@ -86,6 +87,7 @@ export const EditDetailRecipePage = () => {
       console.log("Musíš obsahovat název")
     }
   }
+
   ingredients.forEach((o, i) => o.id = i + 1)
 
   return (
@@ -176,7 +178,7 @@ export const EditDetailRecipePage = () => {
                 <Button type={"button"}
                         onClick={() => {
                           setIngredients(ingredients.filter(current => current.id !== ingredient.id))
-                        }} background={"red"} m={"5px"}>X</Button>
+                        }} background={"red"} m={"5px"} size={"xs"}>X</Button>
               </ListItem>
             </List>
           ))}
