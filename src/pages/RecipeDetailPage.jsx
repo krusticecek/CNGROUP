@@ -71,7 +71,7 @@ export const RecipeDetailPage = () => {
         `${hours}h`
       )
     } else
-      return `${hours}h:${minutes}min`
+      return `${hours}h ${minutes}min`
   }
 
   const handleClick = () => {
@@ -79,7 +79,6 @@ export const RecipeDetailPage = () => {
   }
 
 /// directions pres map
-
 
   return (
     <Box px={5}>
