@@ -10,7 +10,7 @@ import {
   Grid,
   GridItem,
   Heading,
-  Input,
+  Input, List, ListItem,
   NumberDecrementStepper,
   NumberIncrementStepper,
   NumberInput,
@@ -21,9 +21,10 @@ import {
   Textarea
 } from "@chakra-ui/react";
 import {useNavigate} from "react-router-dom";
-import React, {useState} from "react";
+import {useState} from "react";
 import ReactMarkdown from "react-markdown";
 import {api} from "../api";
+
 
 export const AddNewRecipePage = () => {
   const navigate = useNavigate()
@@ -37,7 +38,8 @@ export const AddNewRecipePage = () => {
   const [amountUnit, setAmountUnit] = useState('')
   const [name, setName] = useState('')
 
-  const [ingedience,setIngredience] = useState([])
+  const [ingredients, setIngredients] = useState([])
+  // const [apiIngredients, setApiIngredients] = useState([])
   const isError = title === ''
 
   // vytvorime data, ktere posleme do api
@@ -46,10 +48,9 @@ export const AddNewRecipePage = () => {
     "preparationTime": preparationTime,
     "directions": directions,
     "sideDish": sideDish,
-    "ingredients": ingedience
+    "ingredients": ingredients
   }
 
-  console.log(data)
 
   const handleSaveClicked = () => {
     api.post("/recipes", data)
@@ -62,10 +63,27 @@ export const AddNewRecipePage = () => {
       })
   }
 
-  const handleSaveIngredience = () => {
-    setIngredience(ingedience =>[...ingedience,{"name":name,"amount":amount,"amountUnit":amountUnit}])
+  // useEffect(() => {
+  //   api
+  //     .get("/recipes/ingredients")
+  //     .then(res => {
+  //       setApiIngredients(res.data)
+  //     })
+  // }, [])
+
+  //console.log(apiIngredients)
+
+  const handleSaveIngredients = () => {
+    if (name !== "") {
+      setIngredients(ingredient => [...ingredient, {"name": name, "amount": amount, "amountUnit": amountUnit}])
+    } else {
+      console.log("Musí obsahovat název")
+    }
   }
-  console.log(ingedience)
+  ingredients.forEach((ingredient, x) => ingredient.id = x + 1)
+  console.log(ingredients)
+
+
 
   return (
     <Box>
@@ -123,7 +141,7 @@ export const AddNewRecipePage = () => {
       <Box>
         <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Přílohy</Heading>
         {/* pridani autocompletu zde*/}
-        <Input  type='text' onChange={x => setSideDish(x.target.value)}/>
+        <Input type='text' onChange={x => setSideDish(x.target.value)}/>
       </Box>
 
       <FormLabel display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Ingredience</FormLabel>
@@ -148,12 +166,24 @@ export const AddNewRecipePage = () => {
                  onChange={x => setName(x.target.value)}></Input>
         </GridItem>
       </Grid>
-      <Box display={"flex"} justifyContent={"center"}>
-        <Button onClick={()=>handleSaveIngredience()}>Uložit</Button>
-
+      <Box display={"flex"} justifyContent={"center"} m={"15px"}>
+        <Button onClick={() => handleSaveIngredients()}>Uložit</Button>
+      </Box>
+      <Box>
+        <>
+            {ingredients.map((ingredient) => (
+              <List display={"flex"} justifyContent={"center"} key={ingredient.id}>
+              <ListItem>
+                {ingredient.amount} {ingredient.amountUnit} {ingredient.name}
+                <Button type={"button"}
+                        onClick={() => {
+                          setIngredients(ingredients.filter(current => current.id !== ingredient.id))
+                        }} background={"red"} m={"5px"}>Smazat</Button>
+              </ListItem>
+          </List>
+            ))}
+        </>
       </Box>
     </Box>
   )
 }
-
-

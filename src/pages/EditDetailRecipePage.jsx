@@ -2,13 +2,26 @@ import {useNavigate, useParams} from "react-router-dom";
 import {
   Box,
   Button,
-  ButtonGroup, Flex,
-  FormControl, FormErrorMessage,
+  ButtonGroup,
+  Flex,
+  FormControl,
+  FormErrorMessage,
   FormHelperText,
-  FormLabel, Grid, GridItem,
+  FormLabel,
+  Grid,
+  GridItem,
   Heading,
-  Input, NumberDecrementStepper, NumberIncrementStepper, NumberInput, NumberInputField, NumberInputStepper,
-  Spacer, Text, Textarea
+  Input,
+  List,
+  ListItem,
+  NumberDecrementStepper,
+  NumberIncrementStepper,
+  NumberInput,
+  NumberInputField,
+  NumberInputStepper,
+  Spacer,
+  Text,
+  Textarea
 } from "@chakra-ui/react";
 import React, {useEffect, useState} from "react";
 import ReactMarkdown from "react-markdown";
@@ -27,6 +40,7 @@ export const EditDetailRecipePage = () => {
   const [amount,setAmount] = useState(0)
   const [amountUnit,setAmountUnit]= useState('')
   const [name, setName] = useState('');
+
 
   const isError = title === ''
 
@@ -50,13 +64,7 @@ export const EditDetailRecipePage = () => {
     "preparationTime": preparationTime,
     "directions": directions,
     "sideDish": sideDish,
-    "ingredients": [
-      {
-        "amount": amount,
-        "amountUnit": amountUnit,
-        "name": name
-      }
-    ]
+    "ingredients": ingredients
   }
 
   const handleSaveClicked = () => {
@@ -70,6 +78,15 @@ export const EditDetailRecipePage = () => {
       })
   }
 
+  const handleSaveIngredients = () => {
+    if (name !== "") {
+      setIngredients(ingredient => [...ingredient, {"name": name, "amount": amount, "amountUnit": amountUnit}])
+
+    } else {
+      console.log("Musíš obsahovat název")
+    }
+  }
+  ingredients.forEach((o, i) => o.id = i + 1)
 
   return (
     <Box>
@@ -147,6 +164,24 @@ export const EditDetailRecipePage = () => {
                  onChange={x => setName(x.target.value)} value={name}></Input>
         </GridItem>
       </Grid>
+      <Box display={"flex"} justifyContent={"center"} m={"15px"}>
+        <Button onClick={() => handleSaveIngredients()}>Uložit</Button>
+      </Box>
+      <Box>
+        <>
+          {ingredients.map((ingredient) => (
+            <List display={"flex"} justifyContent={"center"} key={ingredient.id}>
+              <ListItem>
+                {ingredient.amount} {ingredient.amountUnit} {ingredient.name}
+                <Button type={"button"}
+                        onClick={() => {
+                          setIngredients(ingredients.filter(current => current.id !== ingredient.id))
+                        }} background={"red"} m={"5px"}>X</Button>
+              </ListItem>
+            </List>
+          ))}
+        </>
+      </Box>
     </Box>
   )
 }

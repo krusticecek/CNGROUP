@@ -23,7 +23,7 @@ export const App = () => {
             <Route path="/side-dishes" element={<SideDishesPage/>}/>
             <Route path="/new-recipe" element={<AddNewRecipePage/>}/>
             <Route path="*" element={<NotFoundPage/>}/>
-          <Route path="recept/:slug/edit" element={<EditDetailRecipePage/>}/>
+            <Route path="recept/:slug/edit" element={<EditDetailRecipePage/>}/>
           </Routes>
         </AppLayout>
       </ChakraProvider>
