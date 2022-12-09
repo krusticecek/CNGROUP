@@ -21,9 +21,10 @@ import {
   Textarea
 } from "@chakra-ui/react";
 import {useNavigate} from "react-router-dom";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import ReactMarkdown from "react-markdown";
 import {api} from "../api";
+import ChakraUIRenderer from "chakra-ui-markdown-renderer";
 
 
 export const AddNewRecipePage = () => {
@@ -39,7 +40,7 @@ export const AddNewRecipePage = () => {
   const [name, setName] = useState('')
 
   const [ingredients, setIngredients] = useState([])
-  // const [apiIngredients, setApiIngredients] = useState([])
+  const [apiIngredients, setApiIngredients] = useState([])
   const isError = title === ''
 
   // vytvorime data, ktere posleme do api
@@ -63,15 +64,14 @@ export const AddNewRecipePage = () => {
       })
   }
 
-  // useEffect(() => {
-  //   api
-  //     .get("/recipes/ingredients")
-  //     .then(res => {
-  //       setApiIngredients(res.data)
-  //     })
-  // }, [])
+  useEffect(() => {
+    api
+      .get("/recipes/ingredients")
+      .then(res => {
+        setApiIngredients(res.data)
+      })
+  }, [])
 
-  //console.log(apiIngredients)
 
   const handleSaveIngredients = () => {
     if (name !== "") {
@@ -81,7 +81,6 @@ export const AddNewRecipePage = () => {
     }
   }
 
-  ingredients.forEach((ingredient, x) => ingredient.id = x + 1)
 
 
 
@@ -116,7 +115,7 @@ export const AddNewRecipePage = () => {
         <FormLabel>Doba přípravy v minutách</FormLabel>
         <NumberInput
           value={preparationTime > 1200 ? 1200 : preparationTime && preparationTime < 0 ? 0 : preparationTime}
-          clampValueOnBlur={false} max={1200} min={0} onChange={x => setPreparationTime(x)}>
+          clampValueOnBlur={false} max={1200} min={0} onChange={x => setPreparationTime(parseInt(x))}>
           <NumberInputField/>
           <NumberInputStepper>
             <NumberIncrementStepper/>
@@ -136,7 +135,7 @@ export const AddNewRecipePage = () => {
         <Box>
           <Heading as='h2' size='xl' color={"teal"}>Náhled
           </Heading>
-          <ReactMarkdown>{directions}</ReactMarkdown>
+          <ReactMarkdown components={ChakraUIRenderer()}>{directions}</ReactMarkdown>
         </Box>
       </Box>
 
@@ -151,7 +150,7 @@ export const AddNewRecipePage = () => {
         <GridItem w='100%' h='10'>
           <NumberInput
             value={amount > 100 ? 100 : amount && amount < 0 ? 0 : amount}
-            clampValueOnBlur={false} max={100} min={0} onChange={x => setAmount(x)} mb={"15px"}>
+            clampValueOnBlur={false} max={100} min={0} onChange={x => setAmount(parseInt(x))} mb={"15px"}>
             <NumberInputField/>
             <NumberInputStepper>
               <NumberIncrementStepper/>
@@ -174,18 +173,18 @@ export const AddNewRecipePage = () => {
 
       <Box>
         <>
-            {ingredients.map((ingredient) => (
-              <List display={"flex"} justifyContent={"center"} key={ingredient.id}>
+          {ingredients.map((ingredient, index) => (
+            <List display={"flex"} justifyContent={"center"} key={index}>
               <ListItem>
                 {ingredient.amount} {ingredient.amountUnit} {ingredient.name}
                 <Button type={"button"}
-                        onClick={() =>
-                        {
-                          setIngredients(ingredients.filter(current => current.id !== ingredient.id))
+                        onClick={() => {
+                          setIngredients(ingredients.filter((item,idx)=> idx !== index))
+                          console.log(index)
                         }} background={"red"} m={"5px"}>Smazat</Button>
               </ListItem>
-          </List>
-            ))}
+            </List>
+          ))}
         </>
       </Box>
     </Box>

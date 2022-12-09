@@ -15,6 +15,7 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "axios": "^1.2.0",
+    "chakra-ui-markdown-renderer": "^4.1.0",
     "framer-motion": "^4.1.17",
     "moment": "^2.29.4",
     "normalize-diacritics": "^4.0.0",

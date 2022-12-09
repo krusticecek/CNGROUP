@@ -13,6 +13,7 @@ import {useEffect, useState} from "react";
 import {Loader} from "../components/Loader";
 import moment from "moment";
 import ReactMarkdown from "react-markdown";
+import ChakraUIRenderer from 'chakra-ui-markdown-renderer';
 import {api} from "../api";
 
 
@@ -113,7 +114,7 @@ export const RecipeDetailPage = () => {
               )}
               <Text>{moment(`${detail.lastModifiedDate}`).format('llll')}</Text>
             </Box>
-            <Box m={"5px"}><ReactMarkdown>{detail.directions}</ReactMarkdown>
+            <Box m={"5px"}><ReactMarkdown components={ChakraUIRenderer()}>{detail.directions}</ReactMarkdown>
             </Box>
           </Box>
         </>
