@@ -36,26 +36,25 @@ export const EditDetailRecipePage = () => {
   const [preparationTime, setPreparationTime] = useState(0)
   const [title, setTitle] = useState('')
   const [directions, setDirections] = useState('')
-  const [sideDish,setSideDish] = useState('')
-  const [ingredients,setIngredients] = useState([])
-  const [amount,setAmount] = useState(0)
-  const [amountUnit,setAmountUnit]= useState('')
+  const [sideDish, setSideDish] = useState('')
+  const [ingredients, setIngredients] = useState([])
+  const [amount, setAmount] = useState(0)
+  const [amountUnit, setAmountUnit] = useState('')
   const [name, setName] = useState('');
 
 
   const isError = title === ''
 
   useEffect(() => {
-      api.get(`/recipes/${slug}`).then(res => {
-        setDetail(res.data);
-        setTitle(res.data.title);
-        setDirections(res.data.directions)
-        setPreparationTime(res.data.preparationTime)
-        setSideDish(res.data.sideDish)
-        setIngredients(res.data.ingredients)
-      });
+    api.get(`/recipes/${slug}`).then(res => {
+      setDetail(res.data);
+      setTitle(res.data.title);
+      setDirections(res.data.directions)
+      setPreparationTime(res.data.preparationTime)
+      setSideDish(res.data.sideDish)
+      setIngredients(res.data.ingredients)
+    });
   }, [slug]);
-
 
 
   // vytvorime data, ktere posleme do api
@@ -70,7 +69,7 @@ export const EditDetailRecipePage = () => {
   const titlenondiacritic = title.normalize("NFKD").replace(/\p{Diacritic}/gu, "")
 
   const handleSaveClicked = () => {
-    api.post(`/recipes/${detail._id}`, data)
+    api.post(`/recipes/${detail["_id"]}`, data)
       .then(() => {
         navigate(`/recept/${titlenondiacritic}`)
         // navigate(`/`)
@@ -107,7 +106,7 @@ export const EditDetailRecipePage = () => {
 
       <FormControl isInvalid={isError}>
         <FormLabel>Název receptu</FormLabel>
-        <Input type='text' onChange={x => setTitle(x.target.value)} defaultValue={`${title}`} autoFocus/>
+        <Input type='text' onChange={x => setTitle(x.target.value.trim())} defaultValue={`${title}`} autoFocus/>
         {!isError ? (
           <FormHelperText>
             Recept bude uložen s názvem <Text as={"b"}>{title}</Text>
@@ -141,7 +140,7 @@ export const EditDetailRecipePage = () => {
       <Box>
         <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Přílohy</Heading>
         {/* pridani autocompletu zde*/}
-        <Input type={"text"} onChange={x => setSideDish(x.target.value)} value={sideDish}></Input>
+        <Input type={"text"} onChange={x => setSideDish(x.target.value.trim())} value={sideDish}></Input>
       </Box>
 
       <FormLabel display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Ingredience</FormLabel>
@@ -159,11 +158,11 @@ export const EditDetailRecipePage = () => {
         </GridItem>
         <GridItem w='100%' h='10'>
           <Input placeholder={"Jednotka"} mb={"15px"} type={"text"}
-                 onChange={x => setAmountUnit(x.target.value)} value={amountUnit}></Input>
+                 onChange={x => setAmountUnit(x.target.value.trim())} value={amountUnit}></Input>
         </GridItem>
         <GridItem w='100%' h='10'>
           <Input placeholder={"Název"} mb={"15px"} type={"text"}
-                 onChange={x => setName(x.target.value)} value={name}></Input>
+                 onChange={x => setName(x.target.value.trim())} value={name.trim()}></Input>
         </GridItem>
       </Grid>
       <Box display={"flex"} justifyContent={"center"} m={"15px"}>
@@ -177,7 +176,7 @@ export const EditDetailRecipePage = () => {
                 {ingredient.amount} {ingredient.amountUnit} {ingredient.name}
                 <Button type={"button"}
                         onClick={() => {
-                          setIngredients(ingredients.filter((item,idx)=> idx !== index))
+                          setIngredients(ingredients.filter((item, idx) => idx !== index))
                         }} background={"red"} m={"5px"}>Smazat</Button>
               </ListItem>
             </List>

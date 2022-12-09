@@ -21,7 +21,7 @@ import {
   Textarea
 } from "@chakra-ui/react";
 import {useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import ReactMarkdown from "react-markdown";
 import {api} from "../api";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
@@ -40,7 +40,7 @@ export const AddNewRecipePage = () => {
   const [name, setName] = useState('')
 
   const [ingredients, setIngredients] = useState([])
-  const [apiIngredients, setApiIngredients] = useState([])
+  // const [apiIngredients, setApiIngredients] = useState([])
   const isError = title === ''
 
   // vytvorime data, ktere posleme do api
@@ -64,13 +64,13 @@ export const AddNewRecipePage = () => {
       })
   }
 
-  useEffect(() => {
-    api
-      .get("/recipes/ingredients")
-      .then(res => {
-        setApiIngredients(res.data)
-      })
-  }, [])
+  // useEffect(() => {
+  //   api
+  //     .get("/recipes/ingredients")
+  //     .then(res => {
+  //       setApiIngredients(res.data)
+  //     })
+  // }, [])
 
 
   const handleSaveIngredients = () => {
@@ -80,8 +80,6 @@ export const AddNewRecipePage = () => {
       console.log("Musí obsahovat název")
     }
   }
-
-
 
 
   return (
@@ -101,7 +99,7 @@ export const AddNewRecipePage = () => {
 
       <FormControl isInvalid={isError}>
         <FormLabel>Název receptu</FormLabel>
-        <Input autoFocus type='text' onChange={x => setTitle(x.target.value)}/>
+        <Input autoFocus type='text' onChange={x => setTitle(x.target.value.trim())}/>
         {!isError ? (
           <FormHelperText>
             Recept bude uložen pod názvem <Text as={"b"}>{title}</Text>
@@ -142,7 +140,7 @@ export const AddNewRecipePage = () => {
       <Box>
         <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Přílohy</Heading>
         {/* pridani autocompletu zde*/}
-        <Input type='text' onChange={x => setSideDish(x.target.value)}/>
+        <Input type='text' onChange={x => setSideDish(x.target.value.trim())}/>
       </Box>
 
       <FormLabel display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Ingredience</FormLabel>
@@ -160,15 +158,15 @@ export const AddNewRecipePage = () => {
         </GridItem>
         <GridItem w='100%' h='10'>
           <Input placeholder={"Jednotka"} mb={"15px"} type={"text"}
-                 onChange={x => setAmountUnit(x.target.value)}></Input>
+                 onChange={x => setAmountUnit(x.target.value.trim())}></Input>
         </GridItem>
         <GridItem w='100%' h='10'>
           <Input placeholder={"Název"} mb={"15px"} type={"text"}
-                 onChange={x => setName(x.target.value)}></Input>
+                 onChange={x => setName(x.target.value.trim())}></Input>
         </GridItem>
       </Grid>
       <Box display={"flex"} justifyContent={"center"} m={"15px"}>
-        <Button onClick={() => handleSaveIngredients()}>Uložit</Button>
+        <Button  onClick={() => handleSaveIngredients()}>Uložit</Button>
       </Box>
 
       <Box>
@@ -179,7 +177,7 @@ export const AddNewRecipePage = () => {
                 {ingredient.amount} {ingredient.amountUnit} {ingredient.name}
                 <Button type={"button"}
                         onClick={() => {
-                          setIngredients(ingredients.filter((item,idx)=> idx !== index))
+                          setIngredients(ingredients.filter((item, idx) => idx !== index))
                           console.log(index)
                         }} background={"red"} m={"5px"}>Smazat</Button>
               </ListItem>
