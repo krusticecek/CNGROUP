@@ -80,6 +80,8 @@ export const RecipeDetailPage = () => {
   }
 
 /// directions pres map
+ console.log(detail)
+
 
   return (
     <Box px={5}>
@@ -103,11 +105,12 @@ export const RecipeDetailPage = () => {
           <Box display="flex" justifyContent={"space-between"} mt={10}>
             <Box>
               <Text mb={2}>⏲️️ {convertTime()}</Text>
+              <Text>Počet porcí {detail.servingCount}</Text>
               {detail.ingredients && (
                 <List mb={2}>
-                  {detail.ingredients.map((ingredient) => (
+                  {detail.ingredients.map((ingredient,index) => (
                     <ListItem
-                      key={ingredient._id}
+                      key={index}
                     >{`${ingredient.amount} ${ingredient.amountUnit}   ${ingredient.name}`}</ListItem>
                   ))}
                 </List>

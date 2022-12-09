@@ -32,30 +32,35 @@ export const EditDetailRecipePage = () => {
 
   const {slug} = useParams();
   const navigate = useNavigate();
-  const [detail, setDetail] = useState('')
-  const [preparationTime, setPreparationTime] = useState(0)
-  const [title, setTitle] = useState('')
-  const [directions, setDirections] = useState('')
-  const [sideDish, setSideDish] = useState('')
-  const [ingredients, setIngredients] = useState([])
-  const [amount, setAmount] = useState(0)
-  const [amountUnit, setAmountUnit] = useState('')
+  const [detail, setDetail] = useState('');
+  const [preparationTime, setPreparationTime] = useState(0);
+  const [title, setTitle] = useState('');
+  const [directions, setDirections] = useState('');
+  const [sideDish, setSideDish] = useState('');
+  const [servingCount, setServingCount] = useState(0)
+  const [ingredients, setIngredients] = useState([]);
+  const [amount, setAmount] = useState(0);
+  const [amountUnit, setAmountUnit] = useState('');
   const [name, setName] = useState('');
-
 
   const isError = title === ''
 
   useEffect(() => {
-    api.get(`/recipes/${slug}`).then(res => {
-      setDetail(res.data);
-      setTitle(res.data.title);
-      setDirections(res.data.directions)
-      setPreparationTime(res.data.preparationTime)
-      setSideDish(res.data.sideDish)
-      setIngredients(res.data.ingredients)
-    });
+    api.get(`/recipes/${slug}`)
+      .then(res => {
+        setDetail(res.data);
+        setTitle(res.data.title);
+        setDirections(res.data.directions);
+        setPreparationTime(res.data.preparationTime);
+        setSideDish(res.data.sideDish);
+        setIngredients(res.data.ingredients);
+        setServingCount(res.data.servingCount);
+      });
   }, [slug]);
 
+  useEffect(() => {
+    console.log(detail)
+  })
 
   // vytvorime data, ktere posleme do api
   const data = {
@@ -63,11 +68,18 @@ export const EditDetailRecipePage = () => {
     "preparationTime": preparationTime,
     "directions": directions,
     "sideDish": sideDish,
+    "servingCount": servingCount,
     "ingredients": ingredients
+
   }
 
-  const titlenondiacritic = title.normalize("NFKD").replace(/\p{Diacritic}/gu, "")
-
+  let titlenondiacritic =
+    title
+      .normalize("NFKD")
+      .replace(/\p{Diacritic}/gu, "")
+      .trimEnd()
+      .replace(/\s+/g, '-')
+      .toLowerCase()
   const handleSaveClicked = () => {
     api.post(`/recipes/${detail["_id"]}`, data)
       .then(() => {
@@ -84,7 +96,7 @@ export const EditDetailRecipePage = () => {
       setIngredients(ingredient => [...ingredient, {"name": name, "amount": amount, "amountUnit": amountUnit}])
 
     } else {
-      console.log("Musíš obsahovat název")
+      console.log("Musí obsahovat název")
     }
   }
 
@@ -106,7 +118,7 @@ export const EditDetailRecipePage = () => {
 
       <FormControl isInvalid={isError}>
         <FormLabel>Název receptu</FormLabel>
-        <Input type='text' onChange={x => setTitle(x.target.value.trim())} defaultValue={`${title}`} autoFocus/>
+        <Input type='text' onChange={x => setTitle(x.target.value.trimStart())} value={title} autoFocus/>
         {!isError ? (
           <FormHelperText>
             Recept bude uložen s názvem <Text as={"b"}>{title}</Text>
@@ -129,6 +141,20 @@ export const EditDetailRecipePage = () => {
         </NumberInput>
       </FormControl>
 
+      <FormControl mb={"5px"}>
+        <FormLabel>Počet porcí</FormLabel>
+        <NumberInput
+          value={servingCount > 50 ? 50 : servingCount && servingCount < 0 ? 0 : servingCount}
+          clampValueOnBlur={false} max={50} min={0} onChange={x => setServingCount(parseInt(x))}>
+          <NumberInputField/>
+          <NumberInputStepper>
+            <NumberIncrementStepper/>
+            <NumberDecrementStepper/>
+          </NumberInputStepper>
+        </NumberInput>
+      </FormControl>
+
+
       <Box>
         <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Postup</Heading>
         {/* upraveni na markdown textarea*/}
@@ -140,7 +166,7 @@ export const EditDetailRecipePage = () => {
       <Box>
         <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Přílohy</Heading>
         {/* pridani autocompletu zde*/}
-        <Input type={"text"} onChange={x => setSideDish(x.target.value.trim())} value={sideDish}></Input>
+        <Input type={"text"} onChange={x => setSideDish(x.target.value.trimStart())} value={sideDish}></Input>
       </Box>
 
       <FormLabel display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Ingredience</FormLabel>
@@ -158,11 +184,11 @@ export const EditDetailRecipePage = () => {
         </GridItem>
         <GridItem w='100%' h='10'>
           <Input placeholder={"Jednotka"} mb={"15px"} type={"text"}
-                 onChange={x => setAmountUnit(x.target.value.trim())} value={amountUnit}></Input>
+                 onChange={x => setAmountUnit(x.target.value.trimStart())} value={amountUnit}></Input>
         </GridItem>
         <GridItem w='100%' h='10'>
           <Input placeholder={"Název"} mb={"15px"} type={"text"}
-                 onChange={x => setName(x.target.value.trim())} value={name.trim()}></Input>
+                 onChange={x => setName(x.target.value.trimStart())} value={name}></Input>
         </GridItem>
       </Grid>
       <Box display={"flex"} justifyContent={"center"} m={"15px"}>
