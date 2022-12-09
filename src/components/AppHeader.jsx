@@ -18,9 +18,9 @@ export function AppHeader() {
       </Heading>
       <Box mr={4}>
         <HStack p={2} spacing={6}>
-          <Link as={ReactRouterLink} to="/api-test">
-            API TEST
-          </Link>
+          {/*<Link as={ReactRouterLink} to="/api-test">*/}
+          {/*  API TEST*/}
+          {/*</Link>*/}
           <Link as={ReactRouterLink} to="/">
             RECEPTY
           </Link>
