@@ -157,7 +157,6 @@ export const EditDetailRecipePage = () => {
         </NumberInput>
       </FormControl>
 
-
       <Box>
         <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Postup</Heading>
         {/* upraveni na markdown textarea*/}
