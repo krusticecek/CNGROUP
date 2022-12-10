@@ -84,7 +84,7 @@ export const RecipeDetailPage = () => {
  console.log(detail)
 
   let arr = []
-  arr = arr.concat(detail.directions)
+  arr.push(detail.directions)
   console.log(arr)
 
   return (
