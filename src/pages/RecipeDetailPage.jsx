@@ -12,8 +12,8 @@ import {Link, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {Loader} from "../components/Loader";
 import moment from "moment";
-import ReactMarkdown from "react-markdown";
-import ChakraUIRenderer from 'chakra-ui-markdown-renderer';
+// import ReactMarkdown from "react-markdown";
+// import ChakraUIRenderer from 'chakra-ui-markdown-renderer';
 import {api} from "../api";
 
 
@@ -25,7 +25,6 @@ export const RecipeDetailPage = () => {
   const [error, setError] = useState('');
 
   const navigate = useNavigate();
-
 
 
   useEffect(() => {
@@ -57,12 +56,12 @@ export const RecipeDetailPage = () => {
     minutes = minutes.toString()
 
     if (hours === "0") {
-      if (hours < 10) {
+      if (hours < "10") {
         hours = "0" + hours
 
       }
     }
-    if (minutes < 10) {
+    if (minutes < "10") {
       minutes = "0" + minutes
     }
 
@@ -81,9 +80,9 @@ export const RecipeDetailPage = () => {
   }
 
 /// directions pres map
- console.log(detail)
 
-  let arr = detail.directions?.split("\n")
+  const direction = detail.directions?.split("\n")
+  console.log(direction)
 
   return (
     <Box px={5}>
@@ -96,9 +95,13 @@ export const RecipeDetailPage = () => {
               </Box>
               <Spacer/>
               <ButtonGroup>
-                <Link to={'/'}><Button display={"flex"} justifyContent={"flex-end"}>Zpět</Button></Link>
-                <Link to={`/recept/${slug}/edit`}><Button display={"flex"} justifyContent={"flex-end"}
-                                                          colorScheme={"yellow"}>Edit</Button></Link>
+                <Link to={'/'}>
+                  <Button display={"flex"} justifyContent={"flex-end"}>Zpět</Button>
+                </Link>
+                <Link to={`/recept/${slug}/edit`}>
+                  <Button display={"flex"} justifyContent={"flex-end"}
+                          colorScheme={"yellow"}>Edit</Button>
+                </Link>
                 <Button type={"button"} display={"flex"} justifyContent={"flex-end"} colorScheme={"red"}
                         onClick={() => handleClick()}>Smazat</Button>
               </ButtonGroup>
@@ -110,7 +113,7 @@ export const RecipeDetailPage = () => {
               <Text>Počet porcí {detail.servingCount}</Text>
               {detail.ingredients && (
                 <List mb={2}>
-                  {detail.ingredients.map((ingredient,index) => (
+                  {detail.ingredients.map((ingredient, index) => (
                     <ListItem
                       key={index}
                     >{`${ingredient.amount} ${ingredient.amountUnit}   ${ingredient.name}`}</ListItem>
@@ -119,21 +122,20 @@ export const RecipeDetailPage = () => {
               )}
               <Text>{moment(`${detail.lastModifiedDate}`).format('llll')}</Text>
             </Box>
-            <Box m={"5px"}><ReactMarkdown components={ChakraUIRenderer()}>{detail.directions}</ReactMarkdown>
+            {/*<Box m={"5px"}>*/}
+            {/*  <ReactMarkdown components={ChakraUIRenderer()}>{detail.directions}</ReactMarkdown>*/}
+            {/*</Box>*/}
+            <Box m={"5px"}>
+              {detail.directions && (
+                <List>
+                  {direction.map((dir, index) => (
+                    <ListItem key={index}>
+                      {dir}
+                    </ListItem>
+                  ))}
+                </List>
+              )}
             </Box>
-          </Box>
-
-          <Box m={"10px"}>
-            <label>výpis directions pres map</label>
-            {detail.directions &&(
-              <List>
-                {arr.map((dir,index) =>(
-                  <ListItem key={index}>
-                    {dir}
-                  </ListItem>
-                ))}
-              </List>
-            )}
           </Box>
         </>
       )}

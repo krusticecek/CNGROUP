@@ -146,7 +146,6 @@ export const AddNewRecipePage = () => {
 
     <Box>
       <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Postup</Heading>
-      {/* upraveni na markdown textarea*/}
       <Box>
         <Textarea size={"xs"} rows={10} placeholder={"Zde napiš postup přípravy"} value={directions}
                   onChange={x => setDirections(x.target.value)}></Textarea>

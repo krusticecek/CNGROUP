@@ -75,7 +75,7 @@ export const EditDetailRecipePage = () => {
 
   let titlenondiacritic =
     title
-      .normalize("NFKD")
+      ?.normalize("NFKD")
       .replace(/\p{Diacritic}/gu, "")
       .trimEnd()
       .replace(/\s+/g, '-')
@@ -101,6 +101,7 @@ export const EditDetailRecipePage = () => {
       console.log("Musí obsahovat název")
     }
   }
+
 
 
   return (
