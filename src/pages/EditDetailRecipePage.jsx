@@ -94,7 +94,9 @@ export const EditDetailRecipePage = () => {
   const handleSaveIngredients = () => {
     if (name !== "") {
       setIngredients(ingredient => [...ingredient, {"name": name, "amount": amount, "amountUnit": amountUnit}])
-
+      setName('')
+      setAmount(0)
+      setAmountUnit('')
     } else {
       console.log("Musí obsahovat název")
     }

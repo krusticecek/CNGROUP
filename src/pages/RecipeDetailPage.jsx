@@ -83,9 +83,7 @@ export const RecipeDetailPage = () => {
 /// directions pres map
  console.log(detail)
 
-  let arr = []
-  arr.push(detail.directions)
-  console.log(arr)
+  let arr = detail.directions?.split("\n")
 
   return (
     <Box px={5}>
