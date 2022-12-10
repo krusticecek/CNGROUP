@@ -6,7 +6,7 @@ import {
   List,
   ListItem,
   Spacer,
-  Text,
+  Text
 } from "@chakra-ui/react";
 import {Link, useNavigate, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
@@ -20,11 +20,12 @@ import {api} from "../api";
 export const RecipeDetailPage = () => {
   const {slug} = useParams();
 
-  const [detail, setDetail] = useState(null);
+  const [detail, setDetail] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
   const navigate = useNavigate();
+
 
 
   useEffect(() => {
@@ -76,12 +77,15 @@ export const RecipeDetailPage = () => {
   }
 
   const handleClick = () => {
-    api.delete(`/recipes/${detail._id}`).then(() => navigate("/"))
+    api.delete(`/recipes/${detail["_id"]}`).then(() => navigate("/"))
   }
 
 /// directions pres map
  console.log(detail)
 
+  let arr = []
+  arr = arr.concat(detail.directions)
+  console.log(arr)
 
   return (
     <Box px={5}>
@@ -103,7 +107,7 @@ export const RecipeDetailPage = () => {
             </Flex>
           </Box>
           <Box display="flex" justifyContent={"space-between"} mt={10}>
-            <Box>
+            <Box m={"5px"}>
               <Text mb={2}>⏲️️ {convertTime()}</Text>
               <Text>Počet porcí {detail.servingCount}</Text>
               {detail.ingredients && (
@@ -119,6 +123,19 @@ export const RecipeDetailPage = () => {
             </Box>
             <Box m={"5px"}><ReactMarkdown components={ChakraUIRenderer()}>{detail.directions}</ReactMarkdown>
             </Box>
+          </Box>
+
+          <Box m={"10px"}>
+            <label>výpis directions pres map</label>
+            {detail.directions &&(
+              <List>
+                {arr.map((dir,index) =>(
+                  <ListItem key={index}>
+                    {dir}
+                  </ListItem>
+                ))}
+              </List>
+            )}
           </Box>
         </>
       )}
