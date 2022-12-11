@@ -28,8 +28,6 @@ export function RecipeCard({slug, title, preparationTime, sideDish}) {
   }
 
 
-
-
   return (
     <Link to={`/recept/${slug}`}>
       <Card maxW='sm'>
@@ -46,9 +44,9 @@ export function RecipeCard({slug, title, preparationTime, sideDish}) {
         <Divider/>
         <CardFooter>
           <Text color='blue.600' fontSize={"xl"}>
-            ⏲️ {convertTime()}
+            {`⏲️ ${convertTime()}`}
           </Text>
-          <Text fontSize={"xl"} ml={"10px"}> {sideDish}</Text>
+          <Text fontSize={"xl"} ml={"10px"}>{sideDish !== undefined ? `🍴${sideDish}` : ''}</Text>
         </CardFooter>
       </Card>
     </Link>

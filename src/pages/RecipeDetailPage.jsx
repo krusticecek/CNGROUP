@@ -111,7 +111,7 @@ export const RecipeDetailPage = () => {
                   {detail.ingredients.map((ingredient, index) => (
                     <ListItem
                       key={index}
-                    >{`${ingredient.amount !== null || undefined ? ingredient.amount : ''} ${ingredient.amountUnit !== undefined || null? ingredient.amountUnit : ''} ${ingredient.name}`}</ListItem>
+                    >{`${ingredient.amount === 0 || ingredient.amount === null || ingredient.amount === undefined ? '' : ingredient.amount} ${ingredient.amountUnit !== undefined ? ingredient.amountUnit : ''} ${ingredient.name}`}</ListItem>
                   ))}
                 </List>
               )}

@@ -130,11 +130,11 @@ export const EditDetailRecipePage = () => {
     setSideDish('')
   }
 
-  const disable = () => {
+  const hide = () => {
     return sideDish === '' || sideDish === undefined;
   }
   return (
-    <Box>
+    <Box m={"5px"}>
       <Flex minWidth='max-content' alignItems='center' gap='2'>
         <Box p='2'>
           <Heading my={4} size='xl' color={"teal"}>{title || ''}</Heading>
@@ -148,47 +148,55 @@ export const EditDetailRecipePage = () => {
         </ButtonGroup>
       </Flex>
 
-      <FormControl isInvalid={isError}>
-        <FormLabel>Název receptu</FormLabel>
-        <Input type='text' onChange={x => setTitle(x.target.value.trimStart())} value={title || ''} autoFocus/>
-        {!isError ? (
-          <FormHelperText>
-            Recept bude uložen s názvem <Text as={"b"}>{title}</Text>
-          </FormHelperText>
-        ) : (
-          <FormErrorMessage m={"5px"}>Chybí název receptu!</FormErrorMessage>
-        )}
-      </FormControl>
 
-      <FormControl mb={"5px"}>
-        <FormLabel>Doba přípravy v minutách</FormLabel>
-        <NumberInput
-          value={preparationTime > 1200 ? 1200 : preparationTime && preparationTime < 0 ? 0 : preparationTime || 0}
-          clampValueOnBlur={false} max={1200} min={0} onChange={x => setPreparationTime(parseInt(x))}>
-          <NumberInputField/>
-          <NumberInputStepper>
-            <NumberIncrementStepper/>
-            <NumberDecrementStepper/>
-          </NumberInputStepper>
-        </NumberInput>
-      </FormControl>
+      <Grid templateColumns='repeat(3, 1fr)' gap={6} mb={"5px"}>
+        <GridItem w='100%' h='10'>
+          <FormControl isInvalid={isError}>
+            <FormLabel>Název receptu</FormLabel>
+            <Input type='text' onChange={x => setTitle(x.target.value.trimStart())} value={title || ''} autoFocus/>
+            {!isError ? (
+              <FormHelperText>
+                Recept bude uložen s názvem <Text as={"b"}>{title}</Text>
+              </FormHelperText>
+            ) : (
+              <FormErrorMessage m={"5px"}>Chybí název receptu!</FormErrorMessage>
+            )}
+          </FormControl>
+        </GridItem>
+        <GridItem w='100%' h='10'>
+          <FormControl mb={"5px"}>
+            <FormLabel>Doba přípravy v minutách</FormLabel>
+            <NumberInput
+              value={preparationTime > 1200 ? 1200 : preparationTime && preparationTime < 0 ? 0 : preparationTime || 0}
+              clampValueOnBlur={false} max={1200} min={0} onChange={x => setPreparationTime(parseInt(x))}>
+              <NumberInputField/>
+              <NumberInputStepper>
+                <NumberIncrementStepper/>
+                <NumberDecrementStepper/>
+              </NumberInputStepper>
+            </NumberInput>
+          </FormControl>
+        </GridItem>
 
-      <FormControl mb={"5px"}>
-        <FormLabel>Počet porcí</FormLabel>
-        <NumberInput
-          value={servingCount > 50 ? 50 : servingCount && servingCount < 0 ? 0 : servingCount || 0}
-          clampValueOnBlur={false} max={50} min={0} onChange={x => setServingCount(parseInt(x))}>
-          <NumberInputField/>
-          <NumberInputStepper>
-            <NumberIncrementStepper/>
-            <NumberDecrementStepper/>
-          </NumberInputStepper>
-        </NumberInput>
-      </FormControl>
+        <GridItem w='100%' h='10'>
+          <FormControl mb={"5px"}>
+            <FormLabel>Počet porcí</FormLabel>
+            <NumberInput
+              value={servingCount > 50 ? 50 : servingCount && servingCount < 0 ? 0 : servingCount || 0}
+              clampValueOnBlur={false} max={50} min={0} onChange={x => setServingCount(parseInt(x))}>
+              <NumberInputField/>
+              <NumberInputStepper>
+                <NumberIncrementStepper/>
+                <NumberDecrementStepper/>
+              </NumberInputStepper>
+            </NumberInput>
+          </FormControl>
+        </GridItem>
+      </Grid>
 
       <Box>
-        <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Postup</Heading>
-        <Textarea size={"xs"} rows={20} placeholder={"Zde napiš postup přípravy"} value={directions || ''}
+        <Heading display={"flex"} justifyContent={"center"} mt={"60px"} mb={"20px"} color={"teal"}>Postup</Heading>
+        <Textarea mb={"20px"} size={"xs"} rows={20} placeholder={"Zde napiš postup přípravy"} value={directions || ''}
                   onChange={x => setDirections(x.target.value)}></Textarea>
         <ReactMarkdown components={ChakraUIRenderer()} children={directions}></ReactMarkdown>
       </Box>
@@ -199,10 +207,13 @@ export const EditDetailRecipePage = () => {
                                  onSearch={(e) => setSideDish(e)}/>
         <Text m={"5px"} display={"flex"} justifyContent={"center"}>
           {`${sideDish !== undefined ? `${sideDish}` : `Recept nemá přílohu`}`}
-          <Button size={"xs"} disabled={sideDish === ''} hidden={disable()} onClick={() => handleSideDelete()} background={"red"}>Smazat</Button></Text>
+          <Button size={"xs"} disabled={sideDish === ''} hidden={hide()} onClick={() => handleSideDelete()}
+                  background={"red"}>Smazat</Button></Text>
       </Box>
 
-      <FormLabel display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Ingredience</FormLabel>
+
+      <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Ingredience</Heading>
+
       <Grid templateColumns='repeat(3, 1fr)' gap={6}>
         <GridItem w='100%' h='10'>
           <NumberInput
@@ -232,7 +243,7 @@ export const EditDetailRecipePage = () => {
           {ingredients.map((ingredient, index) => (
             <List display={"flex"} justifyContent={"center"} key={index}>
               <ListItem>
-                {ingredient.amount} {ingredient.amountUnit} {ingredient.name}
+                {ingredient.amount === 0 || ingredient.amount === null || ingredient.amountUnit === undefined? '' : ingredient.amount} {ingredient.amountUnit} {ingredient.name}
                 <Button type={"button"}
                         onClick={() => {
                           setIngredients(ingredients.filter((item, idx) => idx !== index))

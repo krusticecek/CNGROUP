@@ -23,7 +23,7 @@ import {
   Textarea
 } from "@chakra-ui/react";
 import {useNavigate} from "react-router-dom";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import ReactMarkdown from "react-markdown";
 import {api} from "../api";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
@@ -110,115 +110,135 @@ export const AddNewRecipePage = () => {
     }
   }
 
+  const hide = () => {
+    return sideDish === '' || sideDish === undefined;
+  }
+
+  const handleSideDelete = () => {
+    setSideDish('')
+  }
+
+  return (
+    <Box m={"5px"}>
+      <Flex minWidth='max-content' alignItems='center' gap='2'>
+        <Box p='2'>
+          <Heading my={4} size='xl' color={"teal"}>Nový recept</Heading>
+        </Box>
+        <Spacer/>
+        <ButtonGroup>
+          <Button display={"flex"} justifyContent={"flex-end"} onClick={() => navigate('/')}>
+            Zpět
+          </Button>
+          <Button colorScheme={"whatsapp"} disabled={isError} onClick={() => handleSaveClicked()}>Uložit</Button>
+        </ButtonGroup>
+      </Flex>
 
 
+      <Grid templateColumns='repeat(3, 1fr)' gap={6} mb={"5px"}>
+        <GridItem w='100%' h='10'>
+          <FormControl isInvalid={isError}>
+            <FormLabel>Název receptu</FormLabel>
+            <Input autoFocus type='text' onChange={x => setTitle(x.target.value.trimStart())}/>
+            {!isError ? (<FormHelperText>
+              Recept bude uložen pod názvem <Text as={"b"}>{title}</Text>
+            </FormHelperText>) : (<FormErrorMessage m={"5px"}>Chybí název receptu!</FormErrorMessage>)}
+          </FormControl>
+        </GridItem>
 
-  return (<Box>
-    <Flex minWidth='max-content' alignItems='center' gap='2'>
-      <Box p='2'>
-        <Heading my={4} size='xl' color={"teal"}>Nový recept</Heading>
-      </Box>
-      <Spacer/>
-      <ButtonGroup>
-        <Button display={"flex"} justifyContent={"flex-end"} onClick={() => navigate('/')}>
-          Zpět
-        </Button>
-        <Button colorScheme={"whatsapp"} disabled={isError} onClick={() => handleSaveClicked()}>Uložit</Button>
-      </ButtonGroup>
-    </Flex>
-
-    <FormControl isInvalid={isError}>
-      <FormLabel>Název receptu</FormLabel>
-      <Input autoFocus type='text' onChange={x => setTitle(x.target.value.trimStart())}/>
-      {!isError ? (<FormHelperText>
-        Recept bude uložen pod názvem <Text as={"b"}>{title}</Text>
-      </FormHelperText>) : (<FormErrorMessage m={"5px"}>Chybí název receptu!</FormErrorMessage>)}
-    </FormControl>
-
-    <FormControl mb={"5px"}>
-      <FormLabel>Doba přípravy v minutách</FormLabel>
-      <NumberInput
-        value={preparationTime > 1200 ? 1200 : preparationTime && preparationTime < 0 ? 0 : preparationTime}
-        clampValueOnBlur={false} max={1200} min={0} onChange={x => setPreparationTime(x)}>
-        <NumberInputField/>
-        <NumberInputStepper>
-          <NumberIncrementStepper/>
-          <NumberDecrementStepper/>
-        </NumberInputStepper>
-      </NumberInput>
-    </FormControl>
-
-    <FormControl mb={"5px"}>
-      <FormLabel>Počet porcí</FormLabel>
-      <NumberInput
-        value={servingCount > 50 ? 50 : servingCount && servingCount < 0 ? 0 : servingCount}
-        clampValueOnBlur={false} max={50} min={0} onChange={x => setServingCount(x)}>
-        <NumberInputField/>
-        <NumberInputStepper>
-          <NumberIncrementStepper/>
-          <NumberDecrementStepper/>
-        </NumberInputStepper>
-      </NumberInput>
-    </FormControl>
+        <GridItem w='100%' h='10'>
+          <FormControl mb={"5px"}>
+            <FormLabel>Doba přípravy v minutách</FormLabel>
+            <NumberInput
+              value={preparationTime > 1200 ? 1200 : preparationTime && preparationTime < 0 ? 0 : preparationTime}
+              clampValueOnBlur={false} max={1200} min={0} onChange={x => setPreparationTime(x)}>
+              <NumberInputField/>
+              <NumberInputStepper>
+                <NumberIncrementStepper/>
+                <NumberDecrementStepper/>
+              </NumberInputStepper>
+            </NumberInput>
+          </FormControl>
+        </GridItem>
+        <GridItem w='100%' h='10'>
+          <FormControl mb={"5px"}>
+            <FormLabel>Počet porcí</FormLabel>
+            <NumberInput
+              value={servingCount > 50 ? 50 : servingCount && servingCount < 0 ? 0 : servingCount}
+              clampValueOnBlur={false} max={50} min={0} onChange={x => setServingCount(x)}>
+              <NumberInputField/>
+              <NumberInputStepper>
+                <NumberIncrementStepper/>
+                <NumberDecrementStepper/>
+              </NumberInputStepper>
+            </NumberInput>
+          </FormControl>
+        </GridItem>
+      </Grid>
 
 
-    <Box>
-      <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Postup</Heading>
       <Box>
-        <Textarea size={"xs"} rows={10} placeholder={"Zde napiš postup přípravy"} value={directions}
-                  onChange={x => setDirections(x.target.value)}></Textarea>
+        <Heading display={"flex"} justifyContent={"center"} mt={"60px"} mb={"20px"} color={"teal"}>Postup</Heading>
+        <Box>
+          <Textarea mb={"5px"} size={"xs"} rows={10} placeholder={"Zde napiš postup přípravy"} value={directions}
+                    onChange={x => setDirections(x.target.value)}></Textarea>
+        </Box>
+        <Box>
+          <Heading as='h2' size='xl' color={"teal"}>Náhled postupu
+          </Heading>
+          <ReactMarkdown components={ChakraUIRenderer()}>{directions}</ReactMarkdown>
+        </Box>
       </Box>
+
       <Box>
-        <Heading as='h2' size='xl' color={"teal"}>Náhled
-        </Heading>
-        <ReactMarkdown components={ChakraUIRenderer()}>{directions}</ReactMarkdown>
+        <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Přílohy</Heading>
+        <ReactSearchAutocomplete items={SideDishesList} onSelect={(e) => setSideDish(e.name)}
+                                 onSearch={(e) => setSideDish(e)}/>
+        <Text m={"5px"} display={"flex"} justifyContent={"center"}>
+          {`${sideDish !== undefined ? `${sideDish}` : `Recept nemá přílohu`}`}
+          <Button size={"xs"} disabled={sideDish === ''} hidden={hide()} onClick={() => handleSideDelete()}
+                  background={"red"}>Smazat</Button></Text>
       </Box>
-    </Box>
 
-    <Box>
-      <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Přílohy</Heading>
-      <ReactSearchAutocomplete items={SideDishesList} onSelect={(e) => setSideDish(e.name)}
-                               onSearch={(e) => setSideDish(e)}/>
-    </Box>
+      <FormLabel display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Ingredience</FormLabel>
+      <Grid templateColumns='repeat(3, 1fr)' gap={6}>
+        <GridItem w='100%' h='10'>
+          <NumberInput
+            value={amount > 100 ? 100 : amount && amount < 0 ? 0 : amount || 0}
+            clampValueOnBlur={false} max={100} min={0} onChange={x => setAmount(parseInt(x))} mb={"15px"}>
+            <NumberInputField/>
+            <NumberInputStepper>
+              <NumberIncrementStepper/>
+              <NumberDecrementStepper/>
+            </NumberInputStepper>
+          </NumberInput>
+        </GridItem>
+        <GridItem w='100%' h='10'>
+          <Input placeholder={"Jednotka"} mb={"15px"} type={"text"}
+                 onChange={x => setAmountUnit(x.target.value.trimStart())}></Input>
+        </GridItem>
+        <GridItem w='100%' h='10'>
+          <ReactSearchAutocomplete items={IngredientsList} onSelect={(e) => setName(e.name)}
+                                   onSearch={(e) => setName(e)}
+                                   placeholder={"Název"}/>
 
-    <FormLabel display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Ingredience</FormLabel>
-    <Grid templateColumns='repeat(3, 1fr)' gap={6}>
-      <GridItem w='100%' h='10'>
-        <NumberInput
-          value={amount > 100 ? 100 : amount && amount < 0 ? 0 : amount || 0}
-          clampValueOnBlur={false} max={100} min={0} onChange={x => setAmount(parseInt(x))} mb={"15px"}>
-          <NumberInputField/>
-          <NumberInputStepper>
-            <NumberIncrementStepper/>
-            <NumberDecrementStepper/>
-          </NumberInputStepper>
-        </NumberInput>
-      </GridItem>
-      <GridItem w='100%' h='10'>
-        <Input placeholder={"Jednotka"} mb={"15px"} type={"text"}
-               onChange={x => setAmountUnit(x.target.value.trimStart())}></Input>
-      </GridItem>
-      <GridItem w='100%' h='10'>
-        <ReactSearchAutocomplete items={IngredientsList} onSelect={(e) => setName(e.name)} onSearch={(e) => setName(e)}
-                                 placeholder={"Název"}/>
-      </GridItem>
-    </Grid>
-    <Box display={"flex"} justifyContent={"center"} m={"15px"}>
-      <Button disabled={name === ''} onClick={() => handleSaveIngredients()}>Uložit</Button>
-    </Box>
+        </GridItem>
+      </Grid>
+      <Box display={"flex"} justifyContent={"center"} m={"15px"}>
+        <Button disabled={name === ''} onClick={() => handleSaveIngredients()}>Uložit</Button>
+      </Box>
 
-    <Box>
-      <>
-        {ingredients.map((ingredient, index) => (<List display={"flex"} justifyContent={"center"} key={index}>
-          <ListItem>
-            {ingredient.amount} {ingredient.amountUnit} {ingredient.name}
-            <Button type={"button"}
-                    onClick={() => {
-                      setIngredients(ingredients.filter((item, idx) => idx !== index))
-                    }} background={"red"} m={"5px"}>Smazat</Button>
-          </ListItem>
-        </List>))}
-      </>
-    </Box>
-  </Box>)
+      <Box>
+        <>
+          {ingredients.map((ingredient, index) => (<List display={"flex"} justifyContent={"center"} key={index}>
+            <ListItem>
+              {ingredient.amount === 0 || ingredient.amount ===  null ? '' : ingredient.amount} {ingredient.amountUnit} {ingredient.name}
+              <Button type={"button"}
+                      onClick={() => {
+                        setIngredients(ingredients.filter((item, idx) => idx !== index))
+                      }} background={"red"} m={"5px"}>Smazat</Button>
+            </ListItem>
+          </List>))}
+        </>
+      </Box>
+    </Box>)
 }
