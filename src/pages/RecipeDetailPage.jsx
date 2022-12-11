@@ -113,14 +113,14 @@ export const RecipeDetailPage = () => {
                   {detail.ingredients.map((ingredient, index) => (
                     <ListItem
                       key={index}
-                    >{`${ingredient.amount} ${ingredient.amountUnit}   ${ingredient.name}`}</ListItem>
+                    >{`${ingredient.amount !== undefined ? ingredient.amount : ''} ${ingredient.amountUnit !== undefined ? ingredient.amountUnit : ''} ${ingredient.name}`}</ListItem>
                   ))}
                 </List>
               )}
               <Text>{moment(`${detail.lastModifiedDate}`).format('llll')}</Text>
             </Box>
-            {/*<Box m={"5px"}>*/}
-            {/*  <ReactMarkdown components={ChakraUIRenderer()}>{detail.directions}</ReactMarkdown>*/}
+            {/*<Box>*/}
+            {/*  <ReactMarkdown children={detail.directions} components={ChakraUIRenderer()}/>*/}
             {/*</Box>*/}
             <Box m={"5px"}>
               {detail.directions && (

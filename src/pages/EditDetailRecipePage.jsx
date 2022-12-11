@@ -112,7 +112,7 @@ export const EditDetailRecipePage = () => {
       .then(res => {
         setApiSideDishes(res.data)
       })
-  },[])
+  }, [])
 
   const SideDishesList = []
   apiSideDishes.map((name, id) =>
@@ -188,7 +188,8 @@ export const EditDetailRecipePage = () => {
 
       <Box>
         <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Přílohy</Heading>
-        <ReactSearchAutocomplete items={SideDishesList} onSelect={(e) => setSideDish(e.name)} onSearch={(e)=>setSideDish(e)}/>
+        <ReactSearchAutocomplete items={SideDishesList} onSelect={(e) => setSideDish(e.name)}
+                                 onSearch={(e) => setSideDish(e)}/>
       </Box>
 
       <FormLabel display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Ingredience</FormLabel>
@@ -209,7 +210,8 @@ export const EditDetailRecipePage = () => {
                  onChange={x => setAmountUnit(x.target.value.trimStart())} value={amountUnit || ''}></Input>
         </GridItem>
         <GridItem w='100%' h='10'>
-          <ReactSearchAutocomplete items={IngredientsList} onSelect={(e) => setName(e.name)} onSearch={(e)=>setName(e)}/>
+          <ReactSearchAutocomplete items={IngredientsList} onSelect={(e) => setName(e.name)}
+                                   onSearch={(e) => setName(e)}/>
         </GridItem>
       </Grid>
       <Box display={"flex"} justifyContent={"center"} m={"15px"}>

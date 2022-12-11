@@ -44,7 +44,7 @@ export const AddNewRecipePage = () => {
   const [name, setName] = useState('')
 
   const [ingredients, setIngredients] = useState([])
-  const[apiSideDishes,setApiSideDishes] = useState([])
+  const [apiSideDishes, setApiSideDishes] = useState([])
   const [apiIngredients, setApiIngredients] = useState([])
   const isError = title === ''
 
@@ -85,20 +85,20 @@ export const AddNewRecipePage = () => {
   }, [])
 
   const IngredientsList = []
-  apiIngredients.map((name,id)=>
+  apiIngredients.map((name, id) =>
     IngredientsList.push({id, name})
   )
 
-  useEffect(()=>{
+  useEffect(() => {
     api
       .get("/recipes/side-dishes")
-      .then(res =>{
+      .then(res => {
         setApiSideDishes(res.data)
       })
   }, [])
 
   const SideDishesList = []
-  apiSideDishes.map((name,id)=>
+  apiSideDishes.map((name, id) =>
     SideDishesList.push({id, name})
   )
 
@@ -175,7 +175,8 @@ export const AddNewRecipePage = () => {
 
     <Box>
       <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Přílohy</Heading>
-      <ReactSearchAutocomplete items={SideDishesList} onSelect={(e)=>setSideDish(e.name)} onSearch={(e)=>setSideDish(e)} />
+      <ReactSearchAutocomplete items={SideDishesList} onSelect={(e) => setSideDish(e.name)}
+                               onSearch={(e) => setSideDish(e)}/>
       {/*<Input type='text' onChange={x => setSideDish(x.target.value.trimStart())}/>*/}
     </Box>
 
@@ -197,7 +198,8 @@ export const AddNewRecipePage = () => {
                onChange={x => setAmountUnit(x.target.value.trimStart())}></Input>
       </GridItem>
       <GridItem w='100%' h='10'>
-        <ReactSearchAutocomplete items={IngredientsList} onSelect={(e)=>setName(e.name)} onSearch={(e)=>setName(e)} placeholder={"Název"}/>
+        <ReactSearchAutocomplete items={IngredientsList} onSelect={(e) => setName(e.name)} onSearch={(e) => setName(e)}
+                                 placeholder={"Název"}/>
         {/*<Input placeholder={"Název"} mb={"15px"} type={"text"}*/}
         {/*       onChange={x => setName(x.target.value.trimStart())}></Input>*/}
       </GridItem>
