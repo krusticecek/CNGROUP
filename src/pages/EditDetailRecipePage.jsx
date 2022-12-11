@@ -27,6 +27,7 @@ import React, {useEffect, useState} from "react";
 import ReactMarkdown from "react-markdown";
 import {api} from "../api";
 import ChakraUIRenderer from "chakra-ui-markdown-renderer";
+import {ReactSearchAutocomplete} from "react-search-autocomplete";
 
 export const EditDetailRecipePage = () => {
 
@@ -42,6 +43,9 @@ export const EditDetailRecipePage = () => {
   const [amount, setAmount] = useState(0);
   const [amountUnit, setAmountUnit] = useState('');
   const [name, setName] = useState('');
+  const [apiSideDishes, setApiSideDishes] = useState([])
+  const [apiIngredients, setApiIngredients] = useState([])
+
 
   const isError = title === ''
 
@@ -58,9 +62,6 @@ export const EditDetailRecipePage = () => {
       });
   }, [slug]);
 
-  useEffect(() => {
-    console.log(detail)
-  })
 
   // vytvorime data, ktere posleme do api
   const data = {
@@ -91,18 +92,39 @@ export const EditDetailRecipePage = () => {
       })
   }
 
+  useEffect(() => {
+    api
+      .get("/recipes/ingredients")
+      .then(res => {
+        setApiIngredients(res.data)
+      })
+  }, [])
+
+  const IngredientsList = []
+  apiIngredients.map((name, id) =>
+    IngredientsList.push({id, name})
+  )
+
+
+  useEffect(() => {
+    api
+      .get("/recipes/side-dishes")
+      .then(res => {
+        setApiSideDishes(res.data)
+      })
+  },[])
+
+  const SideDishesList = []
+  apiSideDishes.map((name, id) =>
+    SideDishesList.push({id, name})
+  )
   const handleSaveIngredients = () => {
     if (name !== "") {
       setIngredients(ingredient => [...ingredient, {"name": name, "amount": amount, "amountUnit": amountUnit}])
-      setName('')
-      setAmount(0)
-      setAmountUnit('')
     } else {
       console.log("Musí obsahovat název")
     }
   }
-
-
 
   return (
     <Box>
@@ -167,8 +189,7 @@ export const EditDetailRecipePage = () => {
 
       <Box>
         <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Přílohy</Heading>
-        {/* pridani autocompletu zde*/}
-        <Input type={"text"} onChange={x => setSideDish(x.target.value.trimStart())} value={sideDish || ''}></Input>
+        <ReactSearchAutocomplete items={SideDishesList} onSelect={(e) => setSideDish(e.name)} onSearch={(e)=>setSideDish(e)}/>
       </Box>
 
       <FormLabel display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Ingredience</FormLabel>
@@ -189,8 +210,7 @@ export const EditDetailRecipePage = () => {
                  onChange={x => setAmountUnit(x.target.value.trimStart())} value={amountUnit || ''}></Input>
         </GridItem>
         <GridItem w='100%' h='10'>
-          <Input placeholder={"Název"} mb={"15px"} type={"text"}
-                 onChange={x => setName(x.target.value.trimStart())} value={name || ''}></Input>
+          <ReactSearchAutocomplete items={IngredientsList} onSelect={(e) => setName(e.name)} onSearch={(e)=>setName(e)}/>
         </GridItem>
       </Grid>
       <Box display={"flex"} justifyContent={"center"} m={"15px"}>

@@ -79,10 +79,7 @@ export const RecipeDetailPage = () => {
     api.delete(`/recipes/${detail["_id"]}`).then(() => navigate("/"))
   }
 
-/// directions pres map
-
   const direction = detail.directions?.split("\n")
-  console.log(direction)
 
   return (
     <Box px={5}>
@@ -109,7 +106,7 @@ export const RecipeDetailPage = () => {
           </Box>
           <Box display="flex" justifyContent={"space-between"} mt={10}>
             <Box m={"5px"}>
-              <Text mb={2}>⏲️️ {convertTime()}</Text>
+              <Text mb={2}>⏲️️ {convertTime()} 🍴{detail.sideDish}</Text>
               <Text>Počet porcí {detail.servingCount}</Text>
               {detail.ingredients && (
                 <List mb={2}>
