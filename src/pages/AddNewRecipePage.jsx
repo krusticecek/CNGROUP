@@ -177,7 +177,6 @@ export const AddNewRecipePage = () => {
       <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Přílohy</Heading>
       <ReactSearchAutocomplete items={SideDishesList} onSelect={(e) => setSideDish(e.name)}
                                onSearch={(e) => setSideDish(e)}/>
-      {/*<Input type='text' onChange={x => setSideDish(x.target.value.trimStart())}/>*/}
     </Box>
 
     <FormLabel display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Ingredience</FormLabel>
@@ -200,8 +199,6 @@ export const AddNewRecipePage = () => {
       <GridItem w='100%' h='10'>
         <ReactSearchAutocomplete items={IngredientsList} onSelect={(e) => setName(e.name)} onSearch={(e) => setName(e)}
                                  placeholder={"Název"}/>
-        {/*<Input placeholder={"Název"} mb={"15px"} type={"text"}*/}
-        {/*       onChange={x => setName(x.target.value.trimStart())}></Input>*/}
       </GridItem>
     </Grid>
     <Box display={"flex"} justifyContent={"center"} m={"15px"}>
