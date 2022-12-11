@@ -181,7 +181,6 @@ export const EditDetailRecipePage = () => {
 
       <Box>
         <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Postup</Heading>
-        {/* upraveni na markdown textarea*/}
         <Textarea size={"xs"} rows={20} placeholder={"Zde napiš postup přípravy"} value={directions || ''}
                   onChange={x => setDirections(x.target.value)}></Textarea>
         <ReactMarkdown components={ChakraUIRenderer()} children={directions}></ReactMarkdown>
