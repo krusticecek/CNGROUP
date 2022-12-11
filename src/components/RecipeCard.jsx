@@ -2,14 +2,12 @@ import {Card, CardBody, Image, Stack, Heading, Text, Divider, CardFooter} from "
 import PlaceHolderImage from "../images/food-placeholder.png";
 import {Link} from "react-router-dom";
 
-
 export function RecipeCard({slug, title, preparationTime, sideDish}) {
   const convertTime = () => {
     let hours = Math.floor(preparationTime / 60)
     let minutes = preparationTime % 60
     hours = hours.toString()
     minutes = minutes.toString()
-
     if (hours === "0") {
       if (hours < "10") {
         hours = "0" + hours
@@ -28,6 +26,9 @@ export function RecipeCard({slug, title, preparationTime, sideDish}) {
     } else
       return `${hours}h ${minutes}min`
   }
+
+
+
 
   return (
     <Link to={`/recept/${slug}`}>

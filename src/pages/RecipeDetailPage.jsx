@@ -54,7 +54,6 @@ export const RecipeDetailPage = () => {
     let minutes = detail.preparationTime % 60
     hours = hours.toString()
     minutes = minutes.toString()
-
     if (hours === "0") {
       if (hours < "10") {
         hours = "0" + hours
@@ -64,7 +63,6 @@ export const RecipeDetailPage = () => {
     if (minutes < "10") {
       minutes = "0" + minutes
     }
-
     if (hours === "00") {
       return (`${minutes}min`)
     } else if (minutes === "00") {
@@ -106,14 +104,14 @@ export const RecipeDetailPage = () => {
           </Box>
           <Box display="flex" justifyContent={"space-between"} mt={10}>
             <Box m={"5px"}>
-              <Text mb={2}>⏲️️ {convertTime()} 🍴{detail.sideDish}</Text>
-              <Text>Počet porcí {detail.servingCount}</Text>
+              <Text mb={2}>⏲️️ {convertTime()} {`${detail.sideDish === undefined ? '' : `🍴${detail.sideDish}`}`}</Text>
+              <Text>{`${detail.servingCount === 0 ? 'Není určen počet porcí' : `Počet porcí ${detail.servingCount}`}`}</Text>
               {detail.ingredients && (
                 <List mb={2}>
                   {detail.ingredients.map((ingredient, index) => (
                     <ListItem
                       key={index}
-                    >{`${ingredient.amount !== undefined ? ingredient.amount : ''} ${ingredient.amountUnit !== undefined ? ingredient.amountUnit : ''} ${ingredient.name}`}</ListItem>
+                    >{`${ingredient.amount !== null || undefined ? ingredient.amount : ''} ${ingredient.amountUnit !== undefined || null? ingredient.amountUnit : ''} ${ingredient.name}`}</ListItem>
                   ))}
                 </List>
               )}

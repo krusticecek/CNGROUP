@@ -126,6 +126,13 @@ export const EditDetailRecipePage = () => {
     }
   }
 
+  const handleSideDelete = () => {
+    setSideDish('')
+  }
+
+  const disable = () => {
+    return sideDish === '' || sideDish === undefined;
+  }
   return (
     <Box>
       <Flex minWidth='max-content' alignItems='center' gap='2'>
@@ -190,6 +197,9 @@ export const EditDetailRecipePage = () => {
         <Heading display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Přílohy</Heading>
         <ReactSearchAutocomplete items={SideDishesList} onSelect={(e) => setSideDish(e.name)}
                                  onSearch={(e) => setSideDish(e)}/>
+        <Text m={"5px"} display={"flex"} justifyContent={"center"}>
+          {`${sideDish !== undefined ? `${sideDish}` : `Recept nemá přílohu`}`}
+          <Button size={"xs"} disabled={sideDish === ''} hidden={disable()} onClick={() => handleSideDelete()} background={"red"}>Smazat</Button></Text>
       </Box>
 
       <FormLabel display={"flex"} justifyContent={"center"} m={4} color={"teal"}>Ingredience</FormLabel>
@@ -215,7 +225,7 @@ export const EditDetailRecipePage = () => {
         </GridItem>
       </Grid>
       <Box display={"flex"} justifyContent={"center"} m={"15px"}>
-        <Button onClick={() => handleSaveIngredients()}>Uložit</Button>
+        <Button disabled={name === ''} onClick={() => handleSaveIngredients()}>Uložit</Button>
       </Box>
       <Box>
         <>

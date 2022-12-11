@@ -111,6 +111,8 @@ export const AddNewRecipePage = () => {
   }
 
 
+
+
   return (<Box>
     <Flex minWidth='max-content' alignItems='center' gap='2'>
       <Box p='2'>
@@ -137,7 +139,7 @@ export const AddNewRecipePage = () => {
       <FormLabel>Doba přípravy v minutách</FormLabel>
       <NumberInput
         value={preparationTime > 1200 ? 1200 : preparationTime && preparationTime < 0 ? 0 : preparationTime}
-        clampValueOnBlur={false} max={1200} min={0} onChange={x => setPreparationTime(parseInt(x))}>
+        clampValueOnBlur={false} max={1200} min={0} onChange={x => setPreparationTime(x)}>
         <NumberInputField/>
         <NumberInputStepper>
           <NumberIncrementStepper/>
@@ -150,7 +152,7 @@ export const AddNewRecipePage = () => {
       <FormLabel>Počet porcí</FormLabel>
       <NumberInput
         value={servingCount > 50 ? 50 : servingCount && servingCount < 0 ? 0 : servingCount}
-        clampValueOnBlur={false} max={50} min={0} onChange={x => setServingCount(parseInt(x))}>
+        clampValueOnBlur={false} max={50} min={0} onChange={x => setServingCount(x)}>
         <NumberInputField/>
         <NumberInputStepper>
           <NumberIncrementStepper/>
@@ -183,7 +185,7 @@ export const AddNewRecipePage = () => {
     <Grid templateColumns='repeat(3, 1fr)' gap={6}>
       <GridItem w='100%' h='10'>
         <NumberInput
-          value={amount > 100 ? 100 : amount && amount < 0 ? 0 : amount}
+          value={amount > 100 ? 100 : amount && amount < 0 ? 0 : amount || 0}
           clampValueOnBlur={false} max={100} min={0} onChange={x => setAmount(parseInt(x))} mb={"15px"}>
           <NumberInputField/>
           <NumberInputStepper>
@@ -202,7 +204,7 @@ export const AddNewRecipePage = () => {
       </GridItem>
     </Grid>
     <Box display={"flex"} justifyContent={"center"} m={"15px"}>
-      <Button onClick={() => handleSaveIngredients()}>Uložit</Button>
+      <Button disabled={name === ''} onClick={() => handleSaveIngredients()}>Uložit</Button>
     </Box>
 
     <Box>
